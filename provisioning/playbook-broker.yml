@@ -1,0 +1,37 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+  - set_fact: ansible_python_interpreter=/usr/bin/python3
+  - name: Install Java
+    dnf:
+      name: java-1.8.0-openjdk
+      state: present
+    become: true
+  - name: Download Artemis
+    get_url:
+      url: https://www.apache.org/dyn/closer.cgi?filename=activemq/activemq-artemis/2.6.2/apache-artemis-2.6.2-bin.tar.gz&action=download
+      dest: /tmp/apache-artemis-2.6.2-bin.tar.gz
+  - name: Create AMQ Broker directory
+    file: path=/tmp/amq state=directory
+  - name: Create AMQ Interconnect directory
+    file: path=/tmp/amq/router state=directory
+  - name: Unzip Artemis
+    unarchive:
+      src: /tmp/apache-artemis-2.6.2-bin.tar.gz
+      dest: /tmp/amq
+      remote_src: yes
+  - name: Create Broker
+    shell: "/tmp/amq/apache-artemis-2.6.2/bin/artemis create --user admin --password admin --allow-anonymous /tmp/amq/broker"
+    args:
+      creates: /tmp/amq/broker
+  - name: Configure Broker
+    template:
+      src: ../templates/broker.xml.j2
+      dest: /tmp/amq/broker/etc/broker.xml
+  - name: Configure Console
+    template:
+      src: ../templates/bootstrap.xml.j2
+      dest: /tmp/amq/broker/etc/bootstrap.xml
+  - name: Start Broker
+    command: /tmp/amq/broker/bin/artemis-service start

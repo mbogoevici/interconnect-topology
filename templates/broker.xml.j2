@@ -188,10 +188,11 @@ under the License.
                <queue name="DLQ" />
             </anycast>
          </address>
-         <address name="testTopic">
-            <multicast>
-               <queue name="testTopic" />
-            </multicast>
+         <address name="Notifications">
+            <multicast/>
+         </address>
+         <address name="PartnerCommands">
+            <multicast/>
          </address>
          <address name="ExpiryQueue">
             <anycast>

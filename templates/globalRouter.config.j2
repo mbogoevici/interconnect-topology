@@ -1,0 +1,134 @@
+router {
+  mode: interior
+  id: Router.A
+}
+
+listener {
+  host: 0.0.0.0
+  port: 5672
+  authenticatePeer: no
+  saslMechanisms: ANONYMOUS
+}
+
+listener {
+  host: 0.0.0.0
+  port: 15672
+  authenticatePeer: no
+  saslMechanisms: ANONYMOUS
+  http: true
+}
+
+connector {
+  name: Region1Broker
+  host: {{Region1Host}}
+  port: {{Region1Port}}
+  role: route-container
+}
+
+connector {
+  name: Region2Broker
+  host: {{Region2Host}}
+  port: {{Region2Port}}
+  role: route-container
+}
+
+address {
+  prefix: commands-global
+  distribution: multicast
+}
+
+autoLink {
+  addr: commands-region1
+  dir: out
+  phase: 0
+  connection: Region1Broker
+  externalAddr: PartnerCommands
+}
+
+autoLink {
+  addr: commands-region2
+  dir: out
+  phase: 0
+  connection: Region2Broker
+  externalAddr: PartnerCommands
+}
+
+autoLink {
+  addr: commands-global
+  dir: out
+  phase: 0
+  connection: Region1Broker
+  externalAddr: PartnerCommands
+}
+
+autoLink {
+  addr: commands-global
+  dir: out
+  phase: 0
+  connection: Region2Broker
+  externalAddr: PartnerCommands
+}
+
+autoLink {
+  addr: commands-recv-region1
+  dir: in
+  phase: 0
+  connection: Region1Broker
+  externalAddr: PartnerCommands
+}
+
+autoLink {
+  addr: commands-recv-region2
+  dir: in
+  phase: 0
+  connection: Region2Broker
+  externalAddr: PartnerCommands
+}
+
+autoLink {
+  addr: notifications-publish-region1
+  dir: out
+  phase: 0
+  connection: Region1Broker
+  externalAddr: Notifications
+}
+
+autoLink {
+  addr: notifications-publish-region2
+  dir: out
+  phase: 0
+  connection: Region2Broker
+  externalAddr: Notifications
+}
+
+autoLink {
+  addr: notifications-region1
+  dir: in
+  phase: 0
+  connection: Region1Broker
+  externalAddr: Notifications
+}
+
+autoLink {
+  addr: notifications-region2
+  dir: in
+  phase: 0
+  connection: Region2Broker
+  externalAddr: Notifications
+}
+
+autoLink {
+  addr: notifications-global
+  dir: in
+  phase: 0
+  connection: Region1Broker
+  externalAddr: Notifications
+}
+
+autoLink {
+  addr: notifications-global
+  dir: in
+  phase: 0
+  connection: Region2Broker
+  externalAddr: Notifications
+}

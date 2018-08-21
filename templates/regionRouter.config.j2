@@ -1,0 +1,108 @@
+router {
+  mode: interior
+  id: Router.{{region_name}}
+}
+
+listener {
+  host: 0.0.0.0
+  port: 5672
+  authenticatePeer: no
+  saslMechanisms: ANONYMOUS
+}
+
+listener {
+  host: 0.0.0.0
+  port: 15672
+  authenticatePeer: no
+  saslMechanisms: ANONYMOUS
+  http: true
+}
+
+connector {
+  name: LocalBroker
+  host: {{local_broker_host}}
+  port: {{local_broker_port}}
+  role: route-container
+}
+
+connector {
+  name: RemoteRouter
+  host: {{remote_router_host}}
+  port: {{remote_router_port}}
+  role: route-container
+}
+
+address {
+  prefix: commands-publish-global
+  distribution: multicast
+}
+
+address {
+  prefix: notifications-receive-local
+  distribution: multicast
+}
+
+
+autoLink {
+  addr: commands-publish-region
+  dir: out
+  phase: 0
+  connection: LocalBroker
+  externalAddr: PartnerCommands
+}
+
+autoLink {
+  addr: commands-publish-global
+  dir: out
+  phase: 0
+  connection: LocalBroker
+  externalAddr: PartnerCommands
+}
+
+autoLink {
+  addr: commands-publish-global
+  dir: out
+  phase: 0
+  connection: RemoteRouter
+  externalAddr: commands-publish-region
+}
+
+autoLink {
+  addr: commands-receive
+  dir: in
+  phase: 0
+  connection: LocalBroker
+  externalAddr: PartnerCommands
+}
+
+autoLink {
+  addr: notifications-publish
+  dir: out
+  phase: 0
+  connection: LocalBroker
+  externalAddr: Notifications
+}
+
+autoLink {
+  addr: notifications-receive-local
+  dir: in
+  phase: 0
+  connection: LocalBroker
+  externalAddr: Notifications
+}
+
+autoLink {
+  addr: notifications-receive-global
+  dir: in
+  phase: 0
+  connection: LocalBroker
+  externalAddr: Notifications
+}
+
+autoLink {
+  addr: notifications-receive-global
+  dir: in
+  phase: 0
+  connection: RemoteRouter
+  externalAddr: notifications-receive-local
+}
