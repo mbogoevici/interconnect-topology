@@ -8,6 +8,11 @@
       name: java-1.8.0-openjdk
       state: present
     become: true
+  - name: Install unzip
+    dnf:
+      name: unzip
+      state: present
+    become: true
   - name: Install QPid Router
     dnf:
       name: qpid-dispatch-router
@@ -20,19 +25,19 @@
     become: true
   - name: Download Artemis
     get_url:
-      url: https://www.apache.org/dyn/closer.cgi?filename=activemq/activemq-artemis/2.6.2/apache-artemis-2.6.2-bin.tar.gz&action=download
-      dest: /tmp/apache-artemis-2.6.2-bin.tar.gz
+      url: http://people.redhat.com/jowest/amq-broker-7.2.0-bin.zip
+      dest: /tmp/amq-broker-7.2.0-bin.zip
   - name: Create AMQ Broker directory
     file: path=/tmp/amq state=directory
   - name: Create AMQ Interconnect directory
     file: path=/tmp/amq/router state=directory
   - name: Unzip Artemis
     unarchive:
-      src: /tmp/apache-artemis-2.6.2-bin.tar.gz
+      src: /tmp/amq-broker-7.2.0-bin.zip
       dest: /tmp/amq
       remote_src: yes
   - name: Create NA Broker
-    shell: "/tmp/amq/apache-artemis-2.6.2/bin/artemis create --user admin --password admin --allow-anonymous /tmp/amq/na-broker"
+    shell: "/tmp/amq/amq-broker-7.2.0/bin/artemis create --user admin --password admin --allow-anonymous /tmp/amq/na-broker"
     args:
       creates: /tmp/amq/na-broker
   - name: Configure NA broker
@@ -48,7 +53,7 @@
     vars:
       console_port: 8161
   - name: Create EMEA Broker
-    shell: "/tmp/amq/apache-artemis-2.6.2/bin/artemis create --user admin --password admin --allow-anonymous /tmp/amq/emea-broker"
+    shell: "/tmp/amq/amq-broker-7.2.0/bin/artemis create --user admin --password admin --allow-anonymous /tmp/amq/emea-broker"
     args:
       creates: /tmp/amq/emea-broker
   - name: Configure EMEA broker
