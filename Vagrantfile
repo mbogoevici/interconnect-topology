@@ -67,6 +67,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "routerRegion1" do |router|
     router.vm.box = "fedora/28-cloud-base"
     router.vm.network "forwarded_port", guest: 5672, host: 15672
+    router.vm.network "forwarded_port", guest: 8161, host: 38161
     router.vm.network "private_network", ip: "192.168.50.111"
     router.vm.provider "virtualbox" do |v|
       v.memory = 1024
@@ -79,7 +80,8 @@ Vagrant.configure("2") do |config|
        local_broker_host: "192.168.50.11",
        local_broker_port: 61616,
        remote_router_host: "192.168.50.112",
-       remote_router_port: 5672
+       remote_router_port: 5672,
+       router_management_port: 8161
      }
     end
   end
@@ -87,6 +89,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "routerRegion2" do |router|
     router.vm.box = "fedora/28-cloud-base"
     router.vm.network "forwarded_port", guest: 5672, host: 25672
+    router.vm.network "forwarded_port", guest: 8161, host: 48161
     router.vm.network "private_network", ip: "192.168.50.112"
     router.vm.provider "virtualbox" do |v|
       v.memory = 1024
@@ -99,7 +102,8 @@ Vagrant.configure("2") do |config|
        local_broker_host: "192.168.50.12",
        local_broker_port: 61616,
        remote_router_host: "192.168.50.111",
-       remote_router_port: 5672
+       remote_router_port: 5672,
+       router_management_port: 8161
      }
     end
   end
