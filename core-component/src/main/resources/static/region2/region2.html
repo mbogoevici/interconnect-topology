@@ -1,0 +1,73 @@
+<div style="margin: 10px; width:990px">
+	<div class="navbar">
+		<a href="#!/home"><img src="imgs/header_logo_500.png" style="height:100px"/></a>
+		<!-- <div style="margin:5px;float: right !important">
+			<img ng-class="selectedCard.cardType"/>
+		</div> -->
+	</div>
+	<div  style="float: left; ;">
+		<div style="float: left; ;">
+			<ul class="menu">
+				<li><a href="#!/home">Home</a></li>
+				<li><a href="#!/region1">NA Core</a></li>
+				<li><a href="#!/region2">APAC Core</a></li>
+			</ul>
+		</div>
+	</div>
+	<div>
+		<div class="heroimage">
+			<img src="imgs/hero_image.jpg"/>
+		</div>
+
+        <div class="vspace">&nbsp;</div>
+		<div>
+			<div class="well well-lg">
+				<div width="600px">
+                    <!-- SETTINGS FORM -->
+                    <h3>Send notification:</h3>
+                    <form class="form-horizontal" ng-submit="submitSettings()" role="form">
+                        <div class="form-group">
+                            <label for="accountId" class="col-sm-3 control-label">Account ID</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="accountId" class="form-control" ng-model="account.accountId" />
+                            </div>
+                            <div class="col-sm-3"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="payload" class="col-sm-3 control-label">Payload</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="payload" class="form-control" ng-model="account.payload" />
+                            </div>
+                            <div class="col-sm-3"></div>
+                        </div>
+                        <input type="button" value="Submit" ng-click="sendNotification()" class="btn btn-primary col-sm-offset-3" />
+                    </form>
+                    <!-- END SETTINGS FORM -->
+				</div>
+			</div>
+		</div>
+
+        <div class="well well-lg">
+            <!-- BEGIN TABLE -->
+            <h3>Commands received</h3>
+            <div class="vspace">&nbsp;</div>
+            <table width="100%">
+                <tr>
+                    <!-- <th>Id</th> -->
+                    <th>Id</th>
+                    <th>Payload</th>
+                </tr>
+                <tr ng-repeat="item in commandsRegion2" ng-click="setSelectedRow($index)"
+                    ng-class="{'selected':$index == selectedRow}">
+                    <td>{{item.accountId}}</td>
+                    <td>{{item.payload}}</td>
+                </tr>
+            </table>
+            <!-- END TABLE -->
+        </div>
+        <div>
+            <!-- placeholder for now-->
+        </div>
+	</div>
+
+</div>
