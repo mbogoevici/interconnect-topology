@@ -7,8 +7,18 @@
 # you're doing.
 Vagrant.configure("2") do |config|
 
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+
+  config.vm.define "baseBox", autostart: false do |baseBox|
+     baseBox.vm.box = "fedora/28-cloud-base"
+     baseBox.ssh.insert_key=false
+     baseBox.vm.provision "ansible" do |a|
+       a.playbook = "provisioning/playbook-basebox.yml"
+     end
+  end
+
   config.vm.define "allInOne", autostart: false do |all|
-    all.vm.box = "fedora/28-cloud-base"
+    all.vm.box = "mbogoevici/fedora28-java-qdrouterd"
 
     all.vm.network "forwarded_port", guest: 61616, host: 61616
     all.vm.network "forwarded_port", guest: 62626, host: 62626
@@ -29,7 +39,7 @@ Vagrant.configure("2") do |config|
 
 
   config.vm.define "region1" do |region|
-    region.vm.box = "fedora/28-cloud-base"
+    region.vm.box = "mbogoevici/fedora28-java-qdrouterd"
     region.vm.network "forwarded_port", guest: 61616, host: 61616
     region.vm.network "forwarded_port", guest: 8161, host: 18161
     region.vm.network "private_network", ip: "192.168.50.11"
@@ -47,7 +57,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "region2" do |region|
-    region.vm.box = "fedora/28-cloud-base"
+    region.vm.box = "mbogoevici/fedora28-java-qdrouterd"
     region.vm.network "forwarded_port", guest: 61616, host: 62626
     region.vm.network "forwarded_port", guest: 8161, host: 28161
     region.vm.network "private_network", ip: "192.168.50.12"
@@ -65,7 +75,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "routerRegion1" do |router|
-    router.vm.box = "fedora/28-cloud-base"
+    router.vm.box = "mbogoevici/fedora28-java-qdrouterd"
     router.vm.network "forwarded_port", guest: 5672, host: 15672
     router.vm.network "forwarded_port", guest: 8161, host: 38161
     router.vm.network "private_network", ip: "192.168.50.111"
@@ -87,7 +97,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "routerRegion2" do |router|
-    router.vm.box = "fedora/28-cloud-base"
+    router.vm.box = "mbogoevici/fedora28-java-qdrouterd"
     router.vm.network "forwarded_port", guest: 5672, host: 25672
     router.vm.network "forwarded_port", guest: 8161, host: 48161
     router.vm.network "private_network", ip: "192.168.50.112"

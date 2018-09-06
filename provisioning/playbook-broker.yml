@@ -13,14 +13,22 @@
       name: unzip
       state: present
     become: true
-  - name: Download Artemis
+  - name: Check for Artemis local
+    local_action: stat path=../amq-broker-7.2.0-bin.zip
+    register: local_artemis_copy
+  - name: Copy Artemis (if local copy found)
+    copy:
+      src: ../amq-broker-7.2.0-bin.zip
+      dest: /tmp/amq-broker-7.2.0-bin.zip
+      mode: u=rw,g=r,o=r
+    when: local_artemis_copy.stat.exists == true
+  - name: Download Artemis (if local copy not found)
     get_url:
       url: http://people.redhat.com/jowest/amq-broker-7.2.0-bin.zip
       dest: /tmp/amq-broker-7.2.0-bin.zip
+    when: local_artemis_copy.stat.exists == false
   - name: Create AMQ Broker directory
     file: path=/tmp/amq state=directory
-  - name: Create AMQ Interconnect directory
-    file: path=/tmp/amq/router state=directory
   - name: Unzip Artemis
     unarchive:
       src: /tmp/amq-broker-7.2.0-bin.zip
