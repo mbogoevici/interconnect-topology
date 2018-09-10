@@ -3,16 +3,16 @@
   gather_facts: false
   tasks:
   - set_fact: ansible_python_interpreter=/usr/bin/python3
-  - name: Install Java
-    dnf:
-      name: java-1.8.0-openjdk
-      state: present
-    become: true
-  - name: Install unzip
-    dnf:
-      name: unzip
-      state: present
-    become: true
+  # - name: Install Java
+  #   dnf:
+  #     name: java-1.8.0-openjdk
+  #     state: present
+  #   become: true
+  # - name: Install unzip
+  #   dnf:
+  #     name: unzip
+  #     state: present
+  #   become: true
   - name: Check for Artemis local
     local_action: stat path=../amq-broker-7.2.0-bin.zip
     register: local_artemis_copy

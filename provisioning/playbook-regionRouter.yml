@@ -3,16 +3,16 @@
   gather_facts: false
   tasks:
   - set_fact: ansible_python_interpreter=/usr/bin/python3
-  - name: Install QPid Router
-    dnf:
-      name: qpid-dispatch-router
-      state: present
-    become: true
-  - name: Install tools
-    dnf:
-      name: qpid-dispatch-tools
-      state: present
-    become: true
+  # - name: Install QPid Router
+  #   dnf:
+  #     name: qpid-dispatch-router
+  #     state: present
+  #   become: true
+  # - name: Install tools
+  #   dnf:
+  #     name: qpid-dispatch-tools
+  #     state: present
+  #   become: true
   - name: Create AMQ Broker directory
     file: path=/tmp/amq state=directory
   - name: Create AMQ Interconnect directory
