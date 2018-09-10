@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
 
 
 
-  config.vm.define "region1" do |region|
+  config.vm.define "namBroker" do |region|
     region.vm.box = "mbogoevici/fedora28-java-qdrouterd"
     region.vm.network "forwarded_port", guest: 61616, host: 61616
     region.vm.network "forwarded_port", guest: 8161, host: 18161
@@ -56,7 +56,7 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "region2" do |region|
+  config.vm.define "apacBroker" do |region|
     region.vm.box = "mbogoevici/fedora28-java-qdrouterd"
     region.vm.network "forwarded_port", guest: 61616, host: 62626
     region.vm.network "forwarded_port", guest: 8161, host: 28161
@@ -74,7 +74,7 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "routerRegion1" do |router|
+  config.vm.define "namRouter" do |router|
     router.vm.box = "mbogoevici/fedora28-java-qdrouterd"
     router.vm.network "forwarded_port", guest: 5672, host: 15672
     router.vm.network "forwarded_port", guest: 8161, host: 38161
@@ -86,7 +86,7 @@ Vagrant.configure("2") do |config|
     router.vm.provision "ansible" do |a|
      a.playbook = "provisioning/playbook-regionRouter.yml"
      a.extra_vars = {
-       region_name: "Region1",
+       region_name: "nam",
        local_broker_host: "192.168.50.11",
        local_broker_port: 61616,
        remote_router_host: "192.168.50.112",
@@ -96,7 +96,7 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "routerRegion2" do |router|
+  config.vm.define "apacRouter" do |router|
     router.vm.box = "mbogoevici/fedora28-java-qdrouterd"
     router.vm.network "forwarded_port", guest: 5672, host: 25672
     router.vm.network "forwarded_port", guest: 8161, host: 48161
@@ -108,7 +108,7 @@ Vagrant.configure("2") do |config|
     router.vm.provision "ansible" do |a|
      a.playbook = "provisioning/playbook-regionRouter.yml"
      a.extra_vars = {
-       region_name: "Region2",
+       region_name: "apac",
        local_broker_host: "192.168.50.12",
        local_broker_port: 61616,
        remote_router_host: "192.168.50.111",
