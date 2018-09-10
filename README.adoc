@@ -1,0 +1,23 @@
+# AMQ Interconnect topology demo
+
+This demo illustrates how to build a cross-data center solution using AMQ broker, AMQ Interconnect and Fuse.
+
+To run the examples:
+
+1. Download version 7.2.0 of AMQ broker locally.
+
+2. Start the broker/router topology 
+
+    vagrant up
+    
+3. Start the core demo application (available at http://localhost:9900)
+
+     cd core-component
+     ./mvnw spring-boot: run
+
+4. Start the client demo application (available at http://localhost:9200)
+
+     cd client
+     ./mvnw spring-boot: run
+
+    
