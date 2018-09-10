@@ -20,51 +20,48 @@
 		<div class="heroimage">
 			<img src="imgs/hero_image.jpg"/>
 		</div>
-		<div>
-			<div class="well well-lg">
-				<div width="600px">
-					<!-- SETTINGS FORM -->
-					<h3>Send command</h3>
-					<form class="form-horizontal" ng-submit="submitSettings()" role="form">
-						<div class="form-group">
-							<label for="accountId" class="col-sm-3 control-label">AccountId</label>
-							<div class="col-sm-6">
-								<input type="text" id="accountId" class="form-control" ng-model="account.accountId" />
-							</div>
-							<label for="payload" class="col-sm-3 control-label">Payload</label>
-							<div class="col-sm-6">
-								<input type="text" id="payload" class="form-control" ng-model="account.payload" />
-							</div>
-							<div class="col-sm-3"></div>
-						</div>
-						<input type="button" value="Submit" ng-click="sendCommand()" class="btn btn-primary col-sm-offset-3" />
-					</form>
-					<!-- END SETTINGS FORM -->
-				</div>
-			</div>
-		</div>
+        <div class="well well-lg">
+            <h2>Local - NA</h2>
 
-		<div class="well well-lg">
-			<!-- BEGIN TABLE -->
-			<h3>Notifications received</h3>
-			<div class="vspace">&nbsp;</div>
-			<table width="100%">
-				<tr>
-					<!-- <th>Id</th> -->
-					<th>Id</th>
-					<th>Payload</th>
-				</tr>
-				<tr ng-repeat="item in notificationsLocalRegion1" ng-click="setSelectedRow($index)"
-					ng-class="{'selected':$index == selectedRow}">
-					<td>{{item.accountId}}</td>
-					<td>{{item.payload}}</td>
-				</tr>
-			</table>
-			<!-- END TABLE -->
-		</div>
-        <!-- END TABLE -->
-        <div>
-            <!-- placeholder for now-->
+            <div width="200px">
+                <!-- SETTINGS FORM -->
+                <h3>Send command:</h3>
+                <form class="form-horizontal" ng-submit="submitSettings()" role="form">
+                    <div class="form-group">
+                        <label for="accountId" class="col-sm-3 control-label">AccountId</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="accountId" class="form-control" ng-model="account.accountId"/>
+                        </div>
+                        <label for="payload" class="col-sm-3 control-label">Payload</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="payload" class="form-control" ng-model="account.payload"/>
+                        </div>
+                        <div class="col-sm-3"></div>
+                    </div>
+                    <input type="button" value="Submit" ng-click="sendCommand()"
+                           class="btn btn-primary col-sm-offset-3"/>
+                </form>
+                <!-- END SETTINGS FORM -->
+            </div>
+
+            <!-- BEGIN TABLE -->
+            <h3>Notifications received</h3>
+            <div class="vspace">&nbsp;</div>
+            <table width="100%">
+                <tr>
+                    <!-- <th>Id</th> -->
+                    <th>Id</th>
+                    <th>Payload</th>
+                    <th>Region</th>
+                </tr>
+                <tr ng-repeat="item in notificationsLocalRegion1" ng-click="setSelectedRow($index)"
+                    ng-class="{'selected':$index == selectedRow}">
+                    <td>{{item.accountId}}</td>
+                    <td>{{item.payload}}</td>
+                    <td>{{item.region}}</td>
+                </tr>
+            </table>
+            <!-- END TABLE -->
         </div>
 	</div>
 

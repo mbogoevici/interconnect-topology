@@ -22,7 +22,10 @@ angular.module('myApp.globalRegion2', ['ngRoute'])
     $scope.account = {};
 
     $scope.sendCommand = function (){
+        $scope.account.region = 'APAC'
+        $scope.account.type = 'Global'
         regionSvc.sendCommand($scope.account)
+        $scope.account = {};
     }
 
 

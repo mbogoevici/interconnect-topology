@@ -22,8 +22,12 @@ angular.module('myApp.globalRegion1', ['ngRoute'])
     $scope.account = {};
 
     $scope.sendCommand = function (){
+        $scope.account.region = 'NA'
+        $scope.account.type = 'Global'
         regionSvc.sendCommand($scope.account)
+        $scope.account = {};
     }
+
 
 
     // $scope.getCurrentAlert = function (item) {

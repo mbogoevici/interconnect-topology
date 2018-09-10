@@ -20,8 +20,10 @@ angular.module('myApp.region2', ['ngRoute'])
 
     $scope.account = {};
     $scope.account.accountId = ''
+    $scope.account.payload = ''
 
     $scope.sendNotification = function (){
+        $scope.account.region = 'APAC'
         region2Svc.sendNotification($scope.account)
         $scope.account = {};
     }

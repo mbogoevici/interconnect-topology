@@ -21,7 +21,10 @@ angular.module('myApp.localRegion2', ['ngRoute'])
     $scope.account = {};
 
     $scope.sendCommand = function (){
+        $scope.account.region = 'APAC'
+        $scope.account.type = 'Local'
         region2Svc.sendCommand($scope.account)
+        $scope.account = {};
     }
 
 

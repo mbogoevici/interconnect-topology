@@ -11,12 +11,15 @@ public class AccountNotification {
 
     private String payload;
 
+    private String region;
+
     public AccountNotification() {
     }
 
-    public AccountNotification(String accountId, String payload) {
+    public AccountNotification(String accountId, String payload, String region) {
         this.accountId = accountId;
         this.payload = payload;
+        this.region = region;
     }
 
     public String getAccountId() {
@@ -33,6 +36,14 @@ public class AccountNotification {
 
     public void setPayload(String payload) {
         this.payload = payload;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     @Override

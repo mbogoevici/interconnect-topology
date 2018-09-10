@@ -12,13 +12,35 @@ public class AccountUpdateCommand {
 
     private String payload;
 
+    private String region;
+
+    private String type;
+
 
     public AccountUpdateCommand() {
     }
 
-    public AccountUpdateCommand(String accountId, String payload) {
+    public AccountUpdateCommand(String accountId, String payload, String region, String type) {
         this.accountId = accountId;
         this.payload = payload;
+        this.region = region;
+        this.type = type;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getAccountId() {
