@@ -19,7 +19,7 @@
     file: path=/tmp/amq/router state=directory
   - name: Configure Router
     template:
-      src: ../templates/regionRouter.config.j2
+      src: ../templates/{{region_name}}Router.config.j2
       dest: /tmp/amq/router/router.config
   - name: Start Router
     command: /usr/sbin/qdrouterd -d -c /tmp/amq/router/router.config

@@ -16,6 +16,8 @@ public class AccountUpdateCommand {
 
     private String type;
 
+    private String partner;
+
 
     public AccountUpdateCommand() {
     }
@@ -57,6 +59,14 @@ public class AccountUpdateCommand {
 
     public void setPayload(String payload) {
         this.payload = payload;
+    }
+
+    public String getPartner() {
+        return partner;
+    }
+
+    public void setPartner(String partner) {
+        this.partner = partner;
     }
 
     @Override

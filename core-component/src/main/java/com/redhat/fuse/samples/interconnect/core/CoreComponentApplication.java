@@ -41,6 +41,7 @@ public class CoreComponentApplication {
     public JmsComponent region1(CamelContext camelContext) {
         JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
         jmsConnectionFactory.setRemoteURI(urlRegion1);
+        jmsConnectionFactory.setReceiveLocalOnly(true);
         JmsComponent jmsComponent = new JmsComponent(camelContext);
         jmsComponent.setConnectionFactory(jmsConnectionFactory);
         return jmsComponent;
@@ -50,6 +51,7 @@ public class CoreComponentApplication {
     public JmsComponent region2(CamelContext camelContext) {
         JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
         jmsConnectionFactory.setRemoteURI(urlRegion2);
+        jmsConnectionFactory.setReceiveLocalOnly(true);
         JmsComponent jmsComponent = new JmsComponent(camelContext);
         jmsComponent.setConnectionFactory(jmsConnectionFactory);
         return jmsComponent;

@@ -19,6 +19,8 @@ listener {
   http: true
 }
 
+# Connectors
+
 connector {
   name: LocalBroker
   host: {{local_broker_host}}
@@ -33,77 +35,84 @@ connector {
   role: route-container
 }
 
+# Addresses for core systems
+
+# Address for Core apps receiving commands
+linkRoute {
+  prefix: account/commands
+  connection: LocalBroker
+  direction: out
+}
+
+# Address for Core apps producing notifications
+linkRoute {
+  prefix: account/notifications
+  connection: LocalBroker
+  direction: in
+}
+
+# Cross-router address for producing commands
+linkRoute {
+  prefix: account/commands
+  connection: LocalBroker
+  direction: in
+}
+
+linkRoute {
+  prefix: account/notifications
+  connection: LocalBroker
+  direction: out
+}
+
+# Addresses for partner systems
+
 address {
-  prefix: commands-publish-global
-  distribution: multicast
+  prefix: acme
+  waypoint: yes
 }
 
-address {
-  prefix: notifications-receive-local
-  distribution: multicast
-}
-
-
+# Address for partner systems producing commands
 autoLink {
-  addr: commands-publish-region
-  dir: out
-  phase: 0
+  addr: acme/account/commands/local
   connection: LocalBroker
-  externalAddr: PartnerCommands
+  phase:0
+  direction: out
+  externalAddr: account/commands
 }
 
-autoLink {
-  addr: commands-publish-global
-  dir: out
-  phase: 0
-  connection: LocalBroker
-  externalAddr: PartnerCommands
-}
 
+
+# Address for partner systems producing commands to external regions
 autoLink {
-  addr: commands-publish-global
-  dir: out
-  phase: 0
+  addr: acme/account/commands/global
   connection: RemoteRouter
-  externalAddr: commands-publish-region
+  phase: 0
+  direction: out
+  externalAddr: account/commands
 }
 
+# Address for partner system receiving local notifications
 autoLink {
-  addr: commands-receive
-  dir: in
-  phase: 0
+  addr: acme/account/notifications/local
   connection: LocalBroker
-  externalAddr: PartnerCommands
+  phase: 0
+  direction: in
+  externalAddr: account/notifications
 }
 
+# Address for partner system receiving global notifications
 autoLink {
-  addr: notifications-publish
-  dir: out
-  phase: 0
+  addr: acme/account/notifications/global
   connection: LocalBroker
-  externalAddr: Notifications
+  phase: 0
+  direction: in
+  externalAddr: account/notifications::acme
 }
 
 autoLink {
-  addr: notifications-receive-local
-  dir: in
-  phase: 0
-  connection: LocalBroker
-  externalAddr: Notifications
-}
-
-autoLink {
-  addr: notifications-receive-global
-  dir: in
-  phase: 0
-  connection: LocalBroker
-  externalAddr: Notifications
-}
-
-autoLink {
-  addr: notifications-receive-global
-  dir: in
-  phase: 0
+  addr: acme/account/notifications/global
   connection: RemoteRouter
-  externalAddr: notifications-receive-local
+  phase: 0
+  direction: in
+  externalAddr: account/notifications::acme
 }

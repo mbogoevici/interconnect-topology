@@ -188,11 +188,14 @@ under the License.
                <queue name="DLQ" />
             </anycast>
          </address>
-         <address name="Notifications">
-            <multicast/>
+         <address name="account/commands">
+         <multicast/>
          </address>
-         <address name="PartnerCommands">
-            <multicast/>
+         <address name="account/notifications">
+           <multicast>
+               <queue name="acme"/>
+               <queue name="ecomm"/>
+           </multicast>
          </address>
          <address name="ExpiryQueue">
             <anycast>

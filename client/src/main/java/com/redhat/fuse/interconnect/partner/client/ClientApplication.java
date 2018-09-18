@@ -46,7 +46,7 @@ public class ClientApplication {
 
 
     @Bean
-    public JmsComponent region1(CamelContext camelContext) {
+    public JmsComponent nam(CamelContext camelContext) {
         JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
         jmsConnectionFactory.setRemoteURI(urlRegion1);
         JmsComponent jmsComponent = new JmsComponent(camelContext);
@@ -55,7 +55,7 @@ public class ClientApplication {
     }
 
     @Bean
-    public JmsComponent region2(CamelContext camelContext) {
+    public JmsComponent apac(CamelContext camelContext) {
         JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
         jmsConnectionFactory.setRemoteURI(urlRegion2);
         JmsComponent jmsComponent = new JmsComponent(camelContext);
@@ -72,24 +72,24 @@ public class ClientApplication {
 
 
                 // Region 1 Addresses
-                from("region1:topic:" + notificationsReceiveLocalAddress)
-                        .log("Notification-Region1: ${in.body}")
-                        .process(new MyProcessor(notificationsRegion1));
-                from("direct:commands-publish-region-1").to("region1:topic:" + commandLocalPublishAddress);
-                from("direct:commands-publish-global-region-1").to("region1:topic:" + commandGlobalPublishAddress);
+//                from("nam:" + notificationsReceiveLocalAddress)
+//                        .log("Notification-Region1: ${in.body}")
+//                        .process(new MyProcessor(notificationsRegion1));
+                from("direct:commands-publish-region-1").to("nam:topic:acme/account/commands/local");
+                from("direct:commands-publish-global-region-1").to("nam:topic:acme/account/commands/local");
 
                 // Region 2
-                from("region2:topic:" + notificationsReceiveLocalAddress)
-                        .log("Notification-Region2: ${in.body}")
-                        .process(new MyProcessor(notificationsRegion2));
-                from("direct:commands-publish-region-2").to("region2:topic:" + commandLocalPublishAddress);
-                from("direct:commands-publish-global-region-2").to("region2:topic:" + commandGlobalPublishAddress);
+//                from("region2:topic:" + notificationsReceiveLocalAddress)
+//                        .log("Notification-Region2: ${in.body}")
+//                        .process(new MyProcessor(notificationsRegion2));
+                from("direct:commands-publish-region-2").to("apac:topic:ecomm/account/commands/local");
+                from("direct:commands-publish-global-region-2").to("apac:topic:ecomm/account/commands/local");
 
                 // Global
-                from("region1:topic:" + notificationsReceiveGlobalAddress)
+                from("nam:topic:acme/account/notifications/global")
                         .log("Global-Region1: ${in.body}")
                         .process(new MyProcessor(notificationsGlobalRegion1));
-                from("region2:topic:" + notificationsReceiveGlobalAddress)
+                from("apac:topic:ecomm/account/notifications/global")
                         .log("Global-Region2: ${in.body}")
                         .process(new MyProcessor(notificationsGlobalRegion2));
 

@@ -15,9 +15,6 @@
 		</div>
 	</div>
 	<div>
-		<div class="heroimage">
-			<img src="imgs/hero_image.jpg"/>
-		</div>
 		<div class="well well-lg">
 			<h2>NA Core</h2>
 			<div width="600px">
@@ -43,6 +40,7 @@
 				</form>
 				<!-- END SETTINGS FORM -->
 			</div>
+		</div>
 
 
 			<!-- BEGIN TABLE -->
@@ -53,6 +51,7 @@
 					<!-- <th>Id</th> -->
 					<th>Id</th>
 					<th>Payload</th>
+					<th>Partner</th>
 					<th>Region</th>
 					<th>Type</th>
 				</tr>
@@ -60,13 +59,13 @@
 					ng-class="{'selected':$index == selectedRow}">
 					<td>{{item.accountId}}</td>
 					<td>{{item.payload}}</td>
+					<td>{{item.partner}}</td>
 					<td>{{item.region}}</td>
 					<td>{{item.type}}</td>
 				</tr>
 			</table>
 			<!-- END TABLE -->
 
-        </div>
 	</div>
 
 

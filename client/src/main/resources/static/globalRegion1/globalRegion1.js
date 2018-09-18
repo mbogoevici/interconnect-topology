@@ -24,6 +24,7 @@ angular.module('myApp.globalRegion1', ['ngRoute'])
     $scope.sendCommand = function (){
         $scope.account.region = 'NA'
         $scope.account.type = 'Global'
+        $scope.account.partner = 'ACME'
         regionSvc.sendCommand($scope.account)
         $scope.account = {};
     }
