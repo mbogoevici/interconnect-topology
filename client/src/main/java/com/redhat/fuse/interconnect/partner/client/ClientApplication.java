@@ -86,14 +86,14 @@ public class ClientApplication {
                         .log("Local NAM: ${in.body}")
                         .process(new MyProcessor(notificationsRegion1, "acmeLocalNotification", sseEmitter));
                 from("direct:commands-publish-region-1").to("nam:topic:acme/account/commands/local");
-                from("direct:commands-publish-global-region-1").to("nam:topic:acme/account/commands/local");
+                from("direct:commands-publish-global-region-1").to("nam:topic:acme/account/commands/apac");
 
                 // Region 2
                 from("apac:topic:ecomm/account/notifications/local")
                         .log("Local APAC: ${in.body}")
                         .process(new MyProcessor(notificationsRegion2, "ecommLocalNotification", sseEmitter));
                 from("direct:commands-publish-region-2").to("apac:topic:ecomm/account/commands/local");
-                from("direct:commands-publish-global-region-2").to("apac:topic:ecomm/account/commands/local");
+                from("direct:commands-publish-global-region-2").to("apac:topic:ecomm/account/commands/nam");
 
                 // Global
                 from("nam:topic:acme/account/notifications/global")
@@ -110,11 +110,11 @@ public class ClientApplication {
 
                 rest("/region1/commands")
                         .post("/local").route().inOnly("direct:commands-publish-region-1").endRest()
-                        .post("/global").route().inOnly("direct:commands-publish-global-region-1").endRest();
+                        .post("/apac").route().inOnly("direct:commands-publish-global-region-1").endRest();
 
                 rest("/region2/commands")
                         .post("/local").route().inOnly("direct:commands-publish-region-2").endRest()
-                        .post("/global").route().inOnly("direct:commands-publish-global-region-2").endRest();
+                        .post("/nam").route().inOnly("direct:commands-publish-global-region-2").endRest();
 
                 rest("/region1/notifications")
                         .get("/global").route().setBody().constant(notificationsGlobalRegion1).endRest()

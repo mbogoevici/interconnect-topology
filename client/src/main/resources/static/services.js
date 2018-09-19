@@ -46,8 +46,8 @@ angular.module('myApp.services', [])
         return $http.get(baseurl + "/" + region + "/" + localNotificationsSuffix);
     }
 
-    var sendCommand = function (account, region) {
-        return $http.post(baseurl + "/" + region + "/" + "commands/local", account)
+    var sendCommand = function (account, region, targetRegion) {
+        return $http.post(baseurl + "/" + region + "/" + "commands/" + targetRegion, account)
     }
 
 

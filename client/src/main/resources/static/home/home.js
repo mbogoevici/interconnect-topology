@@ -81,12 +81,16 @@ angular.module('myApp.home', ['ngRoute'])
 
     $scope.account = {};
 
-    $scope.sendCommand = function (){
-        $scope.account.region = 'APAC'
-        $scope.account.type = 'Global'
-        $scope.account.partner = 'ECOMM'
-        regionSvc.sendCommand($scope.account, "region2")
+    $scope.sendCommand = function (partner, region, targetRegion){
+        $scope.account.region = region === 'region2'?'APAC':'NAM'
+        $scope.account.type = targetRegion === 'local'? 'Local' : 'Cross-Region'
+        $scope.account.partner = partner
+        regionSvc.sendCommand($scope.account, region, targetRegion)
         $scope.account = {};
+    }
+
+    $scope.clearSelection = function (event) {
+        angular.element(event.currentTarget).removeClass('selected')
     }
 
 }]);

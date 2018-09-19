@@ -17,8 +17,6 @@
     <div>
 
             <div class="well well-lg">
-                <h2>ECOMM (APAC Global)</h2>
-
                 <div width="200px">
                     <!-- SETTINGS FORM -->
                     <h3>Send command:</h3>
@@ -36,8 +34,14 @@
                             </div>
                             <div class="col-sm-3"></div>
                         </div>
-                        <input type="button" value="Submit" ng-click="sendCommand()"
-                               class="btn btn-primary col-sm-offset-3"/>
+                        <input type="button" value="ACME Submit Local" ng-click="sendCommand('ACME', 'region1', 'local')"
+                               class="btn btn-primary col-sm-2"/>
+                        <input type="button" value="ACME Submit APAC" ng-click="sendCommand('ACME', 'region1', 'apac')"
+                               class="btn btn-primary col-sm-2 col-sm-offset-1"/>
+                        <input type="button" value="ECOMM Submit Local" ng-click="sendCommand('ECOMM', 'region2', 'local')"
+                               class="btn btn-primary col-sm-2 col-sm-offset-1"/>
+                        <input type="button" value="ECOMM Submit NAM" ng-click="sendCommand('ECOMM', 'region2', 'nam')"
+                               class="btn btn-primary col-sm-2 col-sm-offset-1"/>
                     </form>
                     <!-- END SETTINGS FORM -->
                 </div>
@@ -56,7 +60,7 @@
                     <th>Payload</th>
                     <th>Region</th>
                 </tr>
-                <tr ng-repeat="item in notificationsGlobalRegion1">
+                <tr ng-repeat="item in notificationsGlobalRegion1" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
                     <td>{{item.accountId}}</td>
                     <td>{{item.payload}}</td>
                     <td>{{item.region}}</td>
@@ -74,7 +78,7 @@
                     <th>Payload</th>
                     <th>Region</th>
                 </tr>
-                <tr ng-repeat="item in notificationsLocalRegion1">
+                <tr ng-repeat="item in notificationsLocalRegion1" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
                     <td>{{item.accountId}}</td>
                     <td>{{item.payload}}</td>
                     <td>{{item.region}}</td>
@@ -94,7 +98,7 @@
                     <th>Payload</th>
                     <th>Region</th>
                 </tr>
-                <tr ng-repeat="item in notificationsGlobalRegion2">
+                <tr ng-repeat="item in notificationsGlobalRegion2" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
                     <td>{{item.accountId}}</td>
                     <td>{{item.payload}}</td>
                     <td>{{item.region}}</td>
@@ -112,7 +116,7 @@
                     <th>Payload</th>
                     <th>Region</th>
                 </tr>
-                <tr ng-repeat="item in notificationsLocalRegion2">
+                <tr ng-repeat="item in notificationsLocalRegion2" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
                     <td>{{item.accountId}}</td>
                     <td>{{item.payload}}</td>
                     <td>{{item.region}}</td>
