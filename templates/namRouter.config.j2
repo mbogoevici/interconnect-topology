@@ -1,0 +1,117 @@
+router {
+  mode: interior
+  id: Router.{{region_name}}
+}
+
+listener {
+  host: 0.0.0.0
+  port: 5672
+  authenticatePeer: no
+  saslMechanisms: ANONYMOUS
+}
+
+listener {
+  host: 0.0.0.0
+  port: {{router_management_port}}
+  role: normal
+  authenticatePeer: no
+  saslMechanisms: ANONYMOUS
+  http: true
+}
+
+# Connectors
+
+connector {
+  name: LocalBroker
+  host: {{local_broker_host}}
+  port: {{local_broker_port}}
+  role: route-container
+}
+
+connector {
+  name: RemoteRouter
+  host: {{remote_router_host}}
+  port: {{remote_router_port}}
+  role: route-container
+}
+
+# Addresses for core systems
+
+# Address for Core apps receiving commands
+linkRoute {
+  prefix: account/commands
+  connection: LocalBroker
+  direction: out
+}
+
+linkRoute {
+  prefix: account/commands
+  connection: LocalBroker
+  direction: in
+}
+
+
+# Address for Core apps producing notifications
+linkRoute {
+  prefix: account/notifications
+  connection: LocalBroker
+  direction: in
+}
+
+linkRoute {
+  prefix: account/notifications::acme
+  connection: LocalBroker
+  direction: out
+}
+
+linkRoute {
+  prefix: account/notifications::ecomm
+  connection: LocalBroker
+  direction: out
+}
+
+
+autoLink {
+  addr: acme/account/commands/local
+  connection: LocalBroker
+  phase:0
+  direction: out
+  externalAddr: account/commands
+}
+
+
+
+# Address for partner systems producing commands to external regions
+autoLink {
+  addr: acme/account/commands/apac
+  connection: RemoteRouter
+  phase: 0
+  direction: out
+  externalAddr: account/commands
+}
+
+# Address for partner system receiving global notifications
+autoLink {
+  addr: acme/account/notifications/local
+  connection: LocalBroker
+  phase: 0
+  direction: in
+  externalAddr: account/notifications
+}
+
+# Address for partner system receiving global notifications
+autoLink {
+  addr: acme/account/notifications/global
+  connection: LocalBroker
+  phase: 0
+  direction: in
+  externalAddr: account/notifications::acme
+}
+
+autoLink {
+  addr: acme/account/notifications/global
+  connection: RemoteRouter
+  phase: 0
+  direction: in
+  externalAddr: account/notifications::acme
+}
