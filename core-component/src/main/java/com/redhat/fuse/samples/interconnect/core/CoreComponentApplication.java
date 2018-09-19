@@ -13,12 +13,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @SpringBootApplication
+@RestController
 public class CoreComponentApplication {
 
 	List<AccountUpdateCommand> commandsRegion1 = new CopyOnWriteArrayList<>();
@@ -36,9 +41,17 @@ public class CoreComponentApplication {
     @Value("${commands.consume.address}")
     String commandReceiveAddress;
 
+    private SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
+
+    @GetMapping("/eventStream")
+    @ResponseBody
+    SseEmitter eventStream() {
+        return sseEmitter;
+    }
+
 
     @Bean
-    public JmsComponent region1(CamelContext camelContext) {
+    public JmsComponent nam(CamelContext camelContext) {
         JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
         jmsConnectionFactory.setRemoteURI(urlRegion1);
         jmsConnectionFactory.setReceiveLocalOnly(true);
@@ -48,7 +61,7 @@ public class CoreComponentApplication {
     }
 
     @Bean
-    public JmsComponent region2(CamelContext camelContext) {
+    public JmsComponent apac(CamelContext camelContext) {
         JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
         jmsConnectionFactory.setRemoteURI(urlRegion2);
         jmsConnectionFactory.setReceiveLocalOnly(true);
@@ -63,18 +76,17 @@ public class CoreComponentApplication {
 			@Override
 			public void configure() throws Exception {
 
-				from("direct:notifications-publish-region-1").to("region1:topic:" + notificationsPublishAddress);
+				from("direct:notifications-publish-region-1").to("nam:topic:" + notificationsPublishAddress);
 
+                from("direct:notifications-publish-region-2").to("apac:topic:" + notificationsPublishAddress);
 
-                from("direct:notifications-publish-region-2").to("region2:topic:" + notificationsPublishAddress);
+                from("nam:topic:" + commandReceiveAddress)
+                        .log("NAM: ${in.body}")
+                        .process(new MyProcessor(commandsRegion1, "namCommand", sseEmitter));
 
-                from("region1:topic:" + commandReceiveAddress)
-                        .log("${in.body}")
-                        .process(new MyProcessor(commandsRegion1));
-
-                from("region2:topic:" + commandReceiveAddress)
-                        .log("${in.body}")
-                        .process(new MyProcessor(commandsRegion2));
+                from("apac:topic:" + commandReceiveAddress)
+                        .log("APAC ${in.body}")
+                        .process(new MyProcessor(commandsRegion2, "apacCommand", sseEmitter));
 
 				restConfiguration()
 						.component("servlet")
@@ -105,8 +117,14 @@ public class CoreComponentApplication {
 
         private final List<AccountUpdateCommand> commands;
 
-        public MyProcessor(List<AccountUpdateCommand> commands) {
+        private String eventName;
+
+        private SseEmitter emitter;
+
+        public MyProcessor(List<AccountUpdateCommand> commands, String eventName, SseEmitter emitter) {
             this.commands = commands;
+            this.eventName = eventName;
+            this.emitter = emitter;
         }
 
         @Override
@@ -114,6 +132,7 @@ public class CoreComponentApplication {
             ObjectMapper objectMapper = new ObjectMapper();
             AccountUpdateCommand command = objectMapper.readValue(exchange.getIn().getBody().toString(), AccountUpdateCommand.class);
             commands.add(command);
+            emitter.send(SseEmitter.event().name(eventName).data(command.toString()));
         }
     }
 }

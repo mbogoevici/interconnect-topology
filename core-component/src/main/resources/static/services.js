@@ -127,3 +127,18 @@ angular.module('myApp.services', [])
         sendNotification: sendNotification
     }
 })
+.service('notificationService', function () {
+
+    var eventServiceUrl = 'eventStream'
+
+    const eventSource = new EventSource(eventServiceUrl)
+
+    var registerHandler = function (eventName, handler) {
+        eventSource.addEventListener(eventName, handler, false)
+    }
+
+    return {
+        registerHandler: registerHandler
+    }
+
+})

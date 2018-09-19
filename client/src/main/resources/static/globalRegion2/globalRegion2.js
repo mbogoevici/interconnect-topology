@@ -10,7 +10,6 @@ angular.module('myApp.globalRegion2', ['ngRoute'])
 }])
 
 .controller ('globalRegion2Ctrl', ['$scope','$sce', 'notificationService', 'globalRegion2Svc', function($scope, $sce, notificationService, regionSvc){
-    // EVERY 3 SECONDS; SEE SERVICES.JS 'alertSvc' TO MODIFY
 
     var promise = regionSvc.getAllNotifications();
     promise.then(

@@ -9,29 +9,29 @@ angular.module('myApp.region1', ['ngRoute'])
     });
 }])
 
-.controller ('region1Ctrl', ['$scope','$sce', 'alertSvcRegion1', 'region1Svc', function($scope, $sce, alertSvcRegion1, region1Svc){
+.controller ('region1Ctrl', ['$scope','$sce', 'notificationService', 'region1Svc', function($scope, $sce, notificationService, regionSvc){
     // EVERY 3 SECONDS; SEE SERVICES.JS 'alertSvc' TO MODIFY
 
-    alertSvcRegion1.startAlertTimer();
-    console.log ('in commands ctrl');
+    var promise = regionSvc.getAllCommands();
+    promise.then(
+        function (payload) {
+            $scope.commandsRegion1 = payload.data;
 
-    $scope.$on ('ALERT_REG1', function (event, data){
-        $scope.commandsRegion1 = data;
-    })
+            notificationService.registerHandler("namCommand", function(e) {
+                $scope.commandsRegion1.push(JSON.parse(e.data))
+                $scope.$apply()
+            });
+        }
+    )
 
     $scope.account = {};
-    $scope.account.accountId = ''
-    $scope.account.payload = ''
 
 
     $scope.sendNotification = function (){
         $scope.account.region = 'NA'
-        region1Svc.sendNotification($scope.account)
+        regionSvc.sendNotification($scope.account)
         $scope.account = {};
     }
 
 
-    // $scope.getCurrentAlert = function (item) {
-    //     return JSON.stringify(item, null, 2);
-    // }
 }]);

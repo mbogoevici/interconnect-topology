@@ -9,14 +9,19 @@ angular.module('myApp.region2', ['ngRoute'])
     });
 }])
 
-.controller ('region2Ctrl', ['$scope','$sce', 'alertSvcRegion2', 'region2Svc', function($scope, $sce, alertSvcRegion2, region2Svc){
-    // EVERY 3 SECONDS; SEE SERVICES.JS 'alertSvc' TO MODIFY
-    alertSvcRegion2.startAlertTimer();
-    console.log ('in commands ctrl');
+.controller ('region2Ctrl', ['$scope','$sce', 'notificationService', 'region2Svc', function($scope, $sce, notificationService, regionSvc){
 
-    $scope.$on ('ALERT_REG2', function (event, data){
-        $scope.commandsRegion2 = data;
-    })
+    var promise = regionSvc.getAllCommands();
+    promise.then(
+        function (payload) {
+            $scope.commandsRegion2 = payload.data;
+
+            notificationService.registerHandler("apacCommand", function(e) {
+                $scope.commandsRegion2.push(JSON.parse(e.data))
+                $scope.$apply()
+            });
+        }
+    )
 
     $scope.account = {};
     $scope.account.accountId = ''
@@ -24,7 +29,7 @@ angular.module('myApp.region2', ['ngRoute'])
 
     $scope.sendNotification = function (){
         $scope.account.region = 'APAC'
-        region2Svc.sendNotification($scope.account)
+        regionSvc.sendNotification($scope.account)
         $scope.account = {};
     }
 
