@@ -3,7 +3,6 @@ package com.redhat.fuse.interconnect.partner.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
-import org.apache.camel.ExchangePattern;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jms.JmsComponent;
@@ -13,11 +12,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @SpringBootApplication
+@RestController
 public class ClientApplication {
 
     List<AccountNotification> notificationsRegion1 = new CopyOnWriteArrayList<>();
@@ -43,6 +47,13 @@ public class ClientApplication {
 
     @Value("${commands.global.publish.address}")
     String commandGlobalPublishAddress;
+
+    private SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
+
+    @GetMapping("/eventStream")
+    @ResponseBody SseEmitter eventStream() {
+        return sseEmitter;
+    }
 
 
     @Bean
@@ -88,10 +99,10 @@ public class ClientApplication {
                 // Global
                 from("nam:topic:acme/account/notifications/global")
                         .log("Global-Region1: ${in.body}")
-                        .process(new MyProcessor(notificationsGlobalRegion1));
+                        .process(new MyProcessor(notificationsGlobalRegion1, "acmeNotification", sseEmitter));
                 from("apac:topic:ecomm/account/notifications/global")
                         .log("Global-Region2: ${in.body}")
-                        .process(new MyProcessor(notificationsGlobalRegion2));
+                        .process(new MyProcessor(notificationsGlobalRegion2, "ecommNotification", sseEmitter));
 
 
                 routeBuilder()
@@ -127,8 +138,14 @@ public class ClientApplication {
 
         private final List<AccountNotification> commands;
 
-        public MyProcessor(List<AccountNotification> commands) {
+        private String eventName;
+
+        private SseEmitter emitter;
+
+        public MyProcessor(List<AccountNotification> commands, String eventName, SseEmitter emitter) {
             this.commands = commands;
+            this.eventName = eventName;
+            this.emitter = emitter;
         }
 
         @Override
@@ -136,6 +153,7 @@ public class ClientApplication {
             ObjectMapper objectMapper = new ObjectMapper();
             AccountNotification command = objectMapper.readValue(exchange.getIn().getBody().toString(), AccountNotification.class);
             commands.add(command);
+            emitter.send(SseEmitter.event().name(eventName).data(command.toString()));
         }
     }
 }

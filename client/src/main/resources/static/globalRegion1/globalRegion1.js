@@ -9,15 +9,23 @@ angular.module('myApp.globalRegion1', ['ngRoute'])
     });
 }])
 
-.controller ('globalRegion1Ctrl', ['$scope','$sce', 'alertSvcGlobalRegion1', 'globalRegion1Svc', function($scope, $sce, alertSvc, regionSvc){
+.controller ('globalRegion1Ctrl', ['$scope','$sce', 'notificationService', 'globalRegion1Svc', function($scope, $sce, notificationService, regionSvc){
     // EVERY 3 SECONDS; SEE SERVICES.JS 'alertSvc' TO MODIFY
 
-    alertSvc.startAlertTimer();
     console.log ('in commands ctrl');
 
-    $scope.$on ('ALERT_REG1_GLOBAL', function (event, data){
-        $scope.notificationsGlobalRegion1 = data;
-    })
+    var promise = regionSvc.getAllNotifications();
+    promise.then(
+        function (payload) {
+            $scope.notificationsGlobalRegion1 = payload.data;
+
+            notificationService.registerHandler("acmeNotification", function(e) {
+                $scope.notificationsGlobalRegion1.push(JSON.parse(e.data))
+                $scope.$apply()
+            });
+        }
+    )
+
 
     $scope.account = {};
 
@@ -29,9 +37,4 @@ angular.module('myApp.globalRegion1', ['ngRoute'])
         $scope.account = {};
     }
 
-
-
-    // $scope.getCurrentAlert = function (item) {
-    //     return JSON.stringify(item, null, 2);
-    // }
 }]);
