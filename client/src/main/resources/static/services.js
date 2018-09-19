@@ -31,32 +31,29 @@ angular.module('myApp.services', [])
     }
 })
 
-.service('globalRegion2Svc', function ($http) {
-    var baseurl = 'camel/region2/notifications/global';
+.service('regionService', function ($http) {
+    var baseurl = 'camel';
 
-    var currentAlert = {};
+    var globalNotificationsSuffix = 'notifications/global';
 
-    var setCurrentAlert = function (alertItem) {
-        currentAlert = alertItem;
+    var localNotificationsSuffix = 'notifications/local';
+
+    var getGlobalNotifications = function (region) {
+        return $http.get(baseurl + "/" + region + "/" + globalNotificationsSuffix);
     }
 
-    var getCurrentAlert = function () {
-        return currentAlert;
+    var getLocalNotifications = function (region) {
+        return $http.get(baseurl + "/" + region + "/" + localNotificationsSuffix);
     }
 
-    var getAllNotifications = function () {
-        return $http.get(baseurl);
-    }
-
-    var sendCommand = function (account) {
-        return $http.post('camel/region2/commands/global', account)
+    var sendCommand = function (account, region) {
+        return $http.post(baseurl + "/" + region + "/" + "commands/local", account)
     }
 
 
     return {
-        getAllNotifications: getAllNotifications,
-        getCurrentAlert: getCurrentAlert,
-        setCurrentAlert: setCurrentAlert,
+        getGlobalNotifications: getGlobalNotifications,
+        getLocalNotifications: getLocalNotifications,
         sendCommand: sendCommand
     }
 })

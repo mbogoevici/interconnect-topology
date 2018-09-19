@@ -82,17 +82,16 @@ public class ClientApplication {
 
 
 
-                // Region 1 Addresses
-//                from("nam:" + notificationsReceiveLocalAddress)
-//                        .log("Notification-Region1: ${in.body}")
-//                        .process(new MyProcessor(notificationsRegion1));
+                from("nam:topic:acme/account/notifications/local")
+                        .log("Local NAM: ${in.body}")
+                        .process(new MyProcessor(notificationsRegion1, "acmeLocalNotification", sseEmitter));
                 from("direct:commands-publish-region-1").to("nam:topic:acme/account/commands/local");
                 from("direct:commands-publish-global-region-1").to("nam:topic:acme/account/commands/local");
 
                 // Region 2
-//                from("region2:topic:" + notificationsReceiveLocalAddress)
-//                        .log("Notification-Region2: ${in.body}")
-//                        .process(new MyProcessor(notificationsRegion2));
+                from("apac:topic:ecomm/account/notifications/local")
+                        .log("Local APAC: ${in.body}")
+                        .process(new MyProcessor(notificationsRegion2, "ecommLocalNotification", sseEmitter));
                 from("direct:commands-publish-region-2").to("apac:topic:ecomm/account/commands/local");
                 from("direct:commands-publish-global-region-2").to("apac:topic:ecomm/account/commands/local");
 
