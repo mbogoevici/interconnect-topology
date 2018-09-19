@@ -9,13 +9,13 @@ angular.module('myApp.region1', ['ngRoute'])
     });
 }])
 
-.controller ('region1Ctrl', ['$scope','$sce', 'notificationService', 'region1Svc', function($scope, $sce, notificationService, regionSvc){
+.controller ('region1Ctrl', ['$scope','$sce', 'notificationService', 'regionSvc', function($scope, $sce, notificationService, regionSvc){
     // EVERY 3 SECONDS; SEE SERVICES.JS 'alertSvc' TO MODIFY
 
-    var promise = regionSvc.getAllCommands();
+    var promise = regionSvc.getCommands("region1");
     promise.then(
         function (payload) {
-            $scope.commandsRegion1 = payload.data;
+            $scope.commandsRegion1 = payload.data ? payload.data : [];
 
             notificationService.registerHandler("namCommand", function(e) {
                 $scope.commandsRegion1.push(JSON.parse(e.data))
@@ -29,7 +29,7 @@ angular.module('myApp.region1', ['ngRoute'])
 
     $scope.sendNotification = function (){
         $scope.account.region = 'NA'
-        regionSvc.sendNotification($scope.account)
+        regionSvc.sendNotification($scope.account, "region1")
         $scope.account = {};
     }
 
