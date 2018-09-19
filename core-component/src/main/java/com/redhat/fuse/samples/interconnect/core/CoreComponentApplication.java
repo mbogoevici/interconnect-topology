@@ -131,6 +131,7 @@ public class CoreComponentApplication {
         public void process(Exchange exchange) throws Exception {
             ObjectMapper objectMapper = new ObjectMapper();
             AccountUpdateCommand command = objectMapper.readValue(exchange.getIn().getBody().toString(), AccountUpdateCommand.class);
+            command.setConnection(exchange.getFromEndpoint().getEndpointUri());
             commands.add(command);
             emitter.send(SseEmitter.event().name(eventName).data(command.toString()));
         }

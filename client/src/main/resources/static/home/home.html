@@ -51,11 +51,13 @@
                     <th>Id</th>
                     <th>Payload</th>
                     <th>Region</th>
+                    <th>Connection</th>
                 </tr>
                 <tr ng-repeat="item in notificationsGlobalRegion1" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
                     <td>{{item.accountId}}</td>
                     <td>{{item.payload}}</td>
                     <td>{{item.region}}</td>
+                    <td>{{item.connection}}</td>
                 </tr>
             </table>
         </div>
@@ -69,11 +71,14 @@
                     <th>Id</th>
                     <th>Payload</th>
                     <th>Region</th>
+                    <th>Connection</th>
+                    <td>{{item.connection}}</td>
                 </tr>
                 <tr ng-repeat="item in notificationsLocalRegion1" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
                     <td>{{item.accountId}}</td>
                     <td>{{item.payload}}</td>
                     <td>{{item.region}}</td>
+                    <td>{{item.connection}}</td>
                 </tr>
             </table>
         </div>
@@ -89,11 +94,13 @@
                     <th>Id</th>
                     <th>Payload</th>
                     <th>Region</th>
+                    <th>Connection</th>
                 </tr>
                 <tr ng-repeat="item in notificationsGlobalRegion2" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
                     <td>{{item.accountId}}</td>
                     <td>{{item.payload}}</td>
                     <td>{{item.region}}</td>
+                    <td>{{item.connection}}</td>
                 </tr>
             </table>
         </div>
@@ -107,11 +114,13 @@
                     <th>Id</th>
                     <th>Payload</th>
                     <th>Region</th>
+                    <th>Connection</th>
                 </tr>
                 <tr ng-repeat="item in notificationsLocalRegion2" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
                     <td>{{item.accountId}}</td>
                     <td>{{item.payload}}</td>
                     <td>{{item.region}}</td>
+                    <td>{{item.connection}}</td>
                 </tr>
             </table>
         </div>

@@ -13,6 +13,8 @@ public class AccountNotification {
 
     private String region;
 
+    private String connection;
+
     public AccountNotification() {
     }
 
@@ -44,6 +46,14 @@ public class AccountNotification {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public String getConnection() {
+        return connection;
+    }
+
+    public void setConnection(String connection) {
+        this.connection = connection;
     }
 
     @Override

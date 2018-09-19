@@ -152,6 +152,7 @@ public class ClientApplication {
             ObjectMapper objectMapper = new ObjectMapper();
             AccountNotification command = objectMapper.readValue(exchange.getIn().getBody().toString(), AccountNotification.class);
             commands.add(command);
+            command.setConnection(exchange.getFromEndpoint().getEndpointUri());
             emitter.send(SseEmitter.event().name(eventName).data(command.toString()));
         }
     }

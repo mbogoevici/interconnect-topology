@@ -17,6 +17,7 @@ public class AccountUpdateCommand {
     private String type;
 
     private String partner;
+    private String connection;
 
 
     public AccountUpdateCommand() {
@@ -69,6 +70,14 @@ public class AccountUpdateCommand {
         this.partner = partner;
     }
 
+    public void setConnection(String connection) {
+        this.connection = connection;
+    }
+
+    public String getConnection() {
+        return connection;
+    }
+
     @Override
     public String toString() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -78,4 +87,6 @@ public class AccountUpdateCommand {
             throw new RuntimeException(e);
         }
     }
+
+
 }
