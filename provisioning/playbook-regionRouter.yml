@@ -18,8 +18,10 @@
   - name: Create AMQ Interconnect directory
     file: path=/tmp/amq/router state=directory
   - name: Configure Router
+    become: true
     template:
       src: ../templates/{{region_name}}Router.config.j2
-      dest: /tmp/amq/router/router.config
+      dest: /etc/qpid-dispatch/qdrouterd.conf
   - name: Start Router
-    command: /usr/sbin/qdrouterd -d -c /tmp/amq/router/router.config
+    become: true
+    command: systemctl start qdrouterd.service
