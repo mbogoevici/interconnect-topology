@@ -44,7 +44,7 @@ Vagrant.configure("2") do |config|
     region.vm.network "forwarded_port", guest: 8161, host: 18161
     region.vm.network "private_network", ip: "192.168.50.11"
     region.vm.provider "virtualbox" do |v|
-      v.memory = 1024
+      v.memory = 1536
       v.cpus = 1
     end
     region.vm.provision "ansible" do |a|
@@ -62,7 +62,7 @@ Vagrant.configure("2") do |config|
     region.vm.network "forwarded_port", guest: 8161, host: 28161
     region.vm.network "private_network", ip: "192.168.50.12"
     region.vm.provider "virtualbox" do |v|
-      v.memory = 1024
+      v.memory = 1536
       v.cpus = 1
     end
     region.vm.provision "ansible" do |a|
