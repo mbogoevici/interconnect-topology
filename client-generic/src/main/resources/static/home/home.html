@@ -1,0 +1,94 @@
+<div style="margin: 10px; width:990px">
+    <div class="navbar">
+        <a href="#!/home"><img src="imgs/header_logo_500.png" style="height:100px"/></a>
+        <!-- <div style="margin:5px;float: right !important">
+            <img ng-class="selectedCard.cardType"/>
+        </div> -->
+    </div>
+
+    <div>
+        <div class="well well-lg">
+            <div width="200px">
+                <!-- SETTINGS FORM -->
+                <h3>Partner</h3>
+                <h3>{{displayName(partnerMetadata.partner)}} - {{upper(partnerMetadata.localRegion)}}</h3>
+                <h4>Send command:</h4>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="accountId" class="col-sm-3 control-label">AccountId</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="accountId" class="form-control" ng-model="account.accountId"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="payload" class="col-sm-3 control-label">Payload</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="payload" class="form-control" ng-model="account.payload"/>
+                        </div>
+                        <div class="col-sm-3"></div>
+                    </div>
+                    <input type="button" value="Submit Local" ng-click="sendCommand('local')"
+                           class="btn btn-primary"/>
+                    <small>Address: {{partnerMetadata.localCommandAddress}}&nbsp;</small>
+                    <input type="button" value="Submit Remote" ng-click="sendCommand('remote')"
+                           class="btn btn-primary"/>
+                    <small>Address: {{partnerMetadata.globalCommandAddress}}&nbsp;</small>
+                </form>
+                <!-- END SETTINGS FORM -->
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <h3 style="text-align:center;">Received notifications</h3>
+        </div>
+
+
+        <div class="col-sm-6">
+
+            <h4>Global</h4>
+            <div>Connection: {{partnerMetadata.connectionUrl}}&nbsp;</div>
+            <div>Address: {{partnerMetadata.localNotificationAddress}}&nbsp;</div>
+            <div class="vspace">&nbsp;</div>
+            <table width="100%" class="pre-scrollable">
+                <tr>
+                    <!-- <th>Id</th> -->
+                    <th>Id</th>
+                    <th>Payload</th>
+                    <th>Region</th>
+                </tr>
+                <tr ng-repeat="item in notificationsGlobal" ng-class="{'selected':$last}"
+                    ng-click="clearSelection($event)">
+                    <td>{{item.accountId}}</td>
+                    <td>{{item.payload}}</td>
+                    <td>{{item.region}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-sm-6">
+            <h4>Local</h4>
+            <div>Connection: {{partnerMetadata.connectionUrl}}&nbsp;</div>
+            <div>Address: {{partnerMetadata.localNotificationAddress}}&nbsp;</div>
+            <div class="vspace">&nbsp;</div>
+            <table width="100%" class="pre-scrollable">
+                <tr>
+                    <!-- <th>Id</th> -->
+                    <th>Id</th>
+                    <th>Payload</th>
+                    <th>Region</th>
+                </tr>
+                <tr ng-repeat="item in notificationsLocal" ng-class="{'selected':$last}"
+                    ng-click="clearSelection($event)">
+                    <td>{{item.accountId}}</td>
+                    <td>{{item.payload}}</td>
+                    <td>{{item.region}}</td>
+                </tr>
+            </table>
+        </div>
+
+
+        <!-- END TABLE -->
+
+    </div>
+
+</div>
