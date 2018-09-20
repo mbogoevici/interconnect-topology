@@ -12,8 +12,8 @@
         <div class="well well-lg">
             <div width="200px">
                 <!-- SETTINGS FORM -->
-                <h3>Send command:</h3>
-                <form class="form-horizontal" ng-submit="submitSettings()" role="form">
+                <h3>Send Notification:</h3>
+                <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <label for="accountId" class="col-sm-3 control-label">AccountId</label>
                         <div class="col-sm-6">
@@ -27,20 +27,16 @@
                         </div>
                         <div class="col-sm-3"></div>
                     </div>
-                    <input type="button" value="ACME Submit Local" ng-click="sendCommand('ACME', 'region1', 'local')"
-                           class="btn btn-primary col-sm-2"/>
-                    <input type="button" value="ACME Submit APAC" ng-click="sendCommand('ACME', 'region1', 'apac')"
-                           class="btn btn-primary col-sm-2 col-sm-offset-1"/>
-                    <input type="button" value="ECOMM Submit Local" ng-click="sendCommand('ECOMM', 'region2', 'local')"
-                           class="btn btn-primary col-sm-2 col-sm-offset-1"/>
-                    <input type="button" value="ECOMM Submit NAM" ng-click="sendCommand('ECOMM', 'region2', 'nam')"
-                           class="btn btn-primary col-sm-2 col-sm-offset-1"/>
+                    <input type="button" value="Send to NAM" ng-click="sendNotification('NAM')"
+                           class="btn btn-primary"/>
+                    <input type="button" value="Send to APAC" ng-click="sendNotification('APAC')"
+                           class="btn btn-primary"/>
                 </form>
                 <!-- END SETTINGS FORM -->
             </div>
         </div>
     <div class="col-sm-6">
-    <h3>NA Core</h3>
+    <h3>Notifications: NAM Core</h3>
     <div class="vspace">&nbsp;</div>
     <table width="100%">
         <tr>
@@ -52,7 +48,7 @@
             <th>Type</th>
             <th>Connection</th>
         </tr>
-        <tr ng-repeat="item in commandsRegion1" ng-class="{'selected':$last}" ng-click="clearSelection($event)"">
+        <tr ng-repeat="item in commandsRegion1" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
             <td>{{item.accountId}}</td>
             <td>{{item.payload}}</td>
             <td>{{item.partner}}</td>
@@ -65,7 +61,7 @@
 
     <div class="col-sm-6">
         <!-- BEGIN TABLE -->
-        <h3>APAC Core</h3>
+        <h3>Notifications: APAC Core</h3>
         <div class="vspace">&nbsp;</div>
         <table width="100%">
             <tr>
@@ -77,7 +73,7 @@
                 <th>Type</th>
                 <th>Connection</th>
             </tr>
-            <tr ng-repeat="item in commandsRegion2" ng-class="{'selected':$last}" ng-click="clearSelection($event)"">
+            <tr ng-repeat="item in commandsRegion2" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
                 <td>{{item.accountId}}</td>
                 <td>{{item.payload}}</td>
                 <td>{{item.partner}}</td>

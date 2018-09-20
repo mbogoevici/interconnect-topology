@@ -38,8 +38,8 @@ angular.module('myApp.home', ['ngRoute'])
     $scope.account = {};
 
     $scope.sendNotification = function (region){
-        $scope.account.region = region === "region1"? "NA" : "APAC";
-        regionSvc.sendNotification($scope.account, region)
+        $scope.account.region = region;
+        regionSvc.sendNotification($scope.account, region === "NAM"? "region1" : "region2");
         $scope.account = {};
     }
 
