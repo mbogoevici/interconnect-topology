@@ -1,0 +1,15 @@
+autoLink {
+  addr: {{partner}}/account/notifications/global
+  connection: LocalBroker
+  phase: 0
+  direction: in
+  externalAddr: account/notifications::{{partner}}
+}
+
+autoLink {
+  addr: {{partner}}/account/notifications/global
+  connection: RemoteRouter
+  phase: 0
+  direction: in
+  externalAddr: account/notifications::{{partner}}
+}

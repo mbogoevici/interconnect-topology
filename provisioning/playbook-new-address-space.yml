@@ -1,0 +1,51 @@
+---
+- hosts: namBroker,apacBroker
+  gather_facts: false
+  tasks:
+  - set_fact: ansible_python_interpreter=/usr/bin/python3
+  - name: Create new queue
+    command: "/tmp/amq/broker/bin/artemis queue create --address account/notifications --name {{partner}} --durable --multicast --preserve-on-no-consumers --silent"
+
+- hosts: namRouter
+  gather_facts: false
+  tasks:
+  - set_fact: ansible_python_interpreter=/usr/bin/python3
+  - name: Add synthetic queue
+    become: true
+    blockinfile:
+      path: /etc/qpid-dispatch/qdrouterd.conf
+      insertafter: EOF
+      block: "{{lookup('template', '../templates/syntheticQueue.j2')}}"
+      marker: "# {mark} ANSIBLE MANAGED BLOCK {{partner}} SYNTHETIC QUEUE"
+  - name: Add local commands publish address
+    become: true
+    blockinfile:
+      path: /etc/qpid-dispatch/qdrouterd.conf
+      insertafter: EOF
+      block: "{{lookup('template', '../templates/localNotificationsReceiveAddress.j2')}}"
+      marker: "# {mark} ANSIBLE MANAGED BLOCK {{partner}} LOCAL NOTIFICATIONS RECEIVE"
+  - name: Add local commands publish address
+    become: true
+    blockinfile:
+      path: /etc/qpid-dispatch/qdrouterd.conf
+      insertafter: EOF
+      block: "{{lookup('template', '../templates/localCommandsPublishAddress.j2')}}"
+      marker: "# {mark} ANSIBLE MANAGED BLOCK {{partner}} LOCAL COMMANDS PUBLISH"
+  - name: Restart Router
+    become: true
+    command: systemctl restart qdrouterd.service
+
+- hosts: apacRouter
+  gather_facts: false
+  tasks:
+  - set_fact: ansible_python_interpreter=/usr/bin/python3
+  - name: Add internal linkRoute
+    become: true
+    blockinfile:
+      path: /etc/qpid-dispatch/qdrouterd.conf
+      insertafter: EOF
+      block: "{{lookup('template', '../templates/inter-router-linkRoute.j2')}}"
+      marker: "# {mark} ANSIBLE MANAGED BLOCK {{partner}} INTER-ROUTER-LINK"
+  - name: Restart Router
+    become: true
+    command: systemctl restart qdrouterd.service
