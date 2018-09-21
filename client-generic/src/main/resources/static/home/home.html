@@ -1,16 +1,23 @@
-<div style="margin: 10px; width:990px">
+<div style="margin: 10px">
     <div class="navbar">
         <a href="#!/home"><img src="imgs/header_logo_500.png" style="height:100px"/></a>
         <!-- <div style="margin:5px;float: right !important">
             <img ng-class="selectedCard.cardType"/>
         </div> -->
     </div>
-
+    <div class="page-header">
+        <h3>{{displayName(partnerMetadata.partner)}} <small>{{upper(partnerMetadata.localRegion)}}</small></h3>
+    </div>
     <div>
         <div class="panel panel-primary">
-            <div width="200px">
-                <div class="panel-heading"><h4 class="panel-title">Send Notification:</h4></div>
+                <div class="panel-heading"><h4 class="panel-title">Send Command:</h4></div>
                 <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        <dt>Send Local Commands</dt>
+                        <dd>{{partnerMetadata.connectionUrl}}/{{partnerMetadata.localCommandAddress}}</dd>
+                        <dt>Send Remote Commands</dt>
+                        <dd>{{partnerMetadata.connectionUrl}}/{{partnerMetadata.globalCommandAddress}}</dd>
+                    </dl>
                     <form class="form-inline" role="form">
                         <div class="form-group">
                             <label for="accountId" class="col-sm-3 control-label">AccountId</label>
@@ -25,14 +32,11 @@
                             </div>
                             <div class="col-sm-3"></div>
                         </div>
-                        <input type="button" value="Submit Local" ng-click="sendCommand('local')"
+                        <input type="button" value="Send Command Locally" ng-click="sendCommand('local')"
                                class="btn btn-primary"/>
-                        <small>Address: {{partnerMetadata.localCommandAddress}}&nbsp;</small>
-                        <input type="button" value="Submit Remote" ng-click="sendCommand('remote')"
+                        <input type="button" value="Send Command to {{upper(partnerMetadata.remoteRegion)}} " ng-click="sendCommand('remote')"
                                class="btn btn-primary"/>
-                        <small>Address: {{partnerMetadata.globalCommandAddress}}&nbsp;</small>
                     </form>
-                </div>
                 <!-- END SETTINGS FORM -->
             </div>
         </div>
@@ -42,9 +46,7 @@
             <div class="panel-heading"><h4 class="panel-title">Received notifications</h4></div>
 
             <div class="panel-body">
-
-
-                <div class="col-sm-3">
+                <div class="col-md-3">
                     <div class="panel panel-primary">
                         <div class="panel-heading"><h4 class="panel-title">Global&nbsp;</h4>
                             <small>
@@ -59,7 +61,7 @@
                                     <th>Payload</th>
                                     <th>Region</th>
                                 </tr>
-                                <tr ng-repeat="item in notificationsGlobal" ng-class="{'selected':$last}"
+                                <tr ng-repeat="item in notificationsGlobal"
                                     ng-click="clearSelection($event)">
                                     <td>{{item.accountId}}</td>
                                     <td>{{item.payload}}</td>
@@ -70,7 +72,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-3">
+                <div class="col-md-3">
                     <div class="panel panel-primary">
                         <div class="panel-heading"><h4 class="panel-title">Local&nbsp;</h4>
                             <small>
@@ -85,7 +87,7 @@
                                     <th>Payload</th>
                                     <th>Region</th>
                                 </tr>
-                                <tr ng-repeat="item in notificationsLocal" ng-class="{'selected':$last}"
+                                <tr ng-repeat="item in notificationsLocal"
                                     ng-click="clearSelection($event)">
                                     <td>{{item.accountId}}</td>
                                     <td>{{item.payload}}</td>

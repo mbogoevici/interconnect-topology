@@ -11,6 +11,8 @@ public class Metadata {
 
     private String localRegion;
 
+    private String remoteRegion;
+
     private String localNotificationAddress;
 
     private String globalNotificationAddress;
@@ -22,10 +24,11 @@ public class Metadata {
     public Metadata() {
     }
 
-    public Metadata(String partner, String connectionUrl, String localRegion, String localNotificationAddress, String globalNotificationAddress, String localCommandAddress, String globalCommandAddress) {
+    public Metadata(String partner, String connectionUrl, String localRegion, String remoteRegion, String localNotificationAddress, String globalNotificationAddress, String localCommandAddress, String globalCommandAddress) {
         this.partner = partner;
         this.connectionUrl = connectionUrl;
         this.localRegion = localRegion;
+        this.remoteRegion = remoteRegion;
         this.localNotificationAddress = localNotificationAddress;
         this.globalNotificationAddress = globalNotificationAddress;
         this.localCommandAddress = localCommandAddress;
@@ -86,6 +89,14 @@ public class Metadata {
 
     public void setLocalRegion(String localRegion) {
         this.localRegion = localRegion;
+    }
+
+    public String getRemoteRegion() {
+        return remoteRegion;
+    }
+
+    public void setRemoteRegion(String remoteRegion) {
+        this.remoteRegion = remoteRegion;
     }
 
     @Override

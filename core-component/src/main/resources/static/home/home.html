@@ -11,8 +11,14 @@
     <div>
         <div class="panel panel-primary">
             <!-- SETTINGS FORM -->
-            <div class="panel-heading"><h4 class="panel-title">Send Notification:</h4></div>
+            <div class="panel-heading"><h4 class="panel-title">Core Systems</h4></div>
             <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>NAM Notifications</dt>
+                    <dd>&nbsp;{{coreMetadata.namConnection}}/{{coreMetadata.accountNotificationsAddress}}</dd>
+                    <dt>APAC Notifications</dt>
+                    <dd>&nbsp;{{coreMetadata.apacConnection}}/{{coreMetadata.accountNotificationsAddress}}</dd>
+                </dl>
             <form class="form-inline" role="form">
                 <div class="form-group">
                     <label for="accountId" class="control-label">AccountId</label>
@@ -27,14 +33,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                <input type="button" value="Send to NAM" ng-click="sendNotification('NAM')"
+                <input type="button" value="Notify NAM" ng-click="sendNotification('NAM')"
                        class="btn btn-primary"/>
-                    <small>&nbsp;{{coreMetadata.namConnection}}/{{coreMetadata.accountNotificationsAddress}}</small>
                 </div>
                 <div class="form-group">
-                <input type="button" value="Send to APAC" ng-click="sendNotification('APAC')"
+                <input type="button" value="Notify APAC" ng-click="sendNotification('APAC')"
                        class="btn btn-primary"/>
-                <small>&nbsp;{{coreMetadata.apacConnection}}/{{coreMetadata.accountNotificationsAddress}}</small>
                 </div>
             </form>
             </div>

@@ -37,6 +37,9 @@ public class ClientApplication {
     @Value("${local.region}")
     String localRegion;
 
+    @Value("${remote.region}")
+    String remoteRegion;
+
     @Value("${notifications.local.consume.address}")
     String notificationsReceiveLocalAddress;
 
@@ -98,7 +101,7 @@ public class ClientApplication {
 
                 rest("/metadata")
                         .get().route().setBody()
-                        .constant(new Metadata(partnerName, connectUrl, localRegion, notificationsReceiveLocalAddress, notificationsReceiveGlobalAddress, commandLocalPublishAddress, commandRemotePublishAddress))
+                        .constant(new Metadata(partnerName, connectUrl, localRegion, remoteRegion, notificationsReceiveLocalAddress, notificationsReceiveGlobalAddress, commandLocalPublishAddress, commandRemotePublishAddress))
                         .endRest();
 
             }
