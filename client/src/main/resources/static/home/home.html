@@ -1,4 +1,4 @@
-<div style="margin: 10px; width:990px">
+<div style="margin: 10px;">
     <div class="navbar">
         <a href="#!/home"><img src="imgs/header_logo_500.png" style="height:100px"/></a>
         <!-- <div style="margin:5px;float: right !important">
@@ -8,118 +8,141 @@
 
     <div>
 
-            <div class="well well-lg">
-                <div width="200px">
-                    <!-- SETTINGS FORM -->
-                    <h3>Send command:</h3>
-                    <form class="form-horizontal" ng-submit="submitSettings()" role="form">
-                        <div class="form-group">
-                            <label for="accountId" class="col-sm-3 control-label">AccountId</label>
-                            <div class="col-sm-6">
-                                <input type="text" id="accountId" class="form-control" ng-model="account.accountId"/>
-                            </div>
+        <div class="panel panel-primary">
+            <div width="200px">
+                <!-- SETTINGS FORM -->
+                <div class="panel-heading"><h4 class="panel-title">Send command:</h4></div>
+                <form class="form-inline panel-body" ng-submit="submitSettings()" role="form">
+                    <div class="form-group">
+                        <label for="accountId" class="col-sm-3 control-label">AccountId</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="accountId" class="form-control" ng-model="account.accountId"/>
                         </div>
-                        <div class="form-group">
-                            <label for="payload" class="col-sm-3 control-label">Payload</label>
-                            <div class="col-sm-6">
-                                <input type="text" id="payload" class="form-control" ng-model="account.payload"/>
-                            </div>
-                            <div class="col-sm-3"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="payload" class="col-sm-3 control-label">Payload</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="payload" class="form-control" ng-model="account.payload"/>
                         </div>
-                        <input type="button" value="ACME Submit Local" ng-click="sendCommand('ACME', 'region1', 'local')" class="btn btn-primary"/>
-                        <input type="button" value="ACME Submit APAC" ng-click="sendCommand('ACME', 'region1', 'apac')" class="btn btn-primary"/>
-                        <input type="button" value="ECOMM Submit Local" ng-click="sendCommand('ECOMM', 'region2', 'local')" class="btn btn-primary"/>
-                        <input type="button" value="ECOMM Submit NAM" ng-click="sendCommand('ECOMM', 'region2', 'nam')" class="btn btn-primary"/>
-                    </form>
-                    <!-- END SETTINGS FORM -->
+                        <div class="col-sm-3"></div>
+                    </div>
+                    <input type="button" value="ACME Submit Local" ng-click="sendCommand('ACME', 'region1', 'local')"
+                           class="btn btn-primary"/>
+                    <input type="button" value="ACME Submit APAC" ng-click="sendCommand('ACME', 'region1', 'apac')"
+                           class="btn btn-primary"/>
+                    <input type="button" value="ECOMM Submit Local" ng-click="sendCommand('ECOMM', 'region2', 'local')"
+                           class="btn btn-primary"/>
+                    <input type="button" value="ECOMM Submit NAM" ng-click="sendCommand('ECOMM', 'region2', 'nam')"
+                           class="btn btn-primary"/>
+                </form>
+                <!-- END SETTINGS FORM -->
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+
+            <div class="panel-heading"><h4 class="panel-title">Received notifications</h4></div>
+
+            <div class="panel-body">
+                <div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><h4 class="panel-title">ACME Global&nbsp;</h4>
+                            <small>{{partnerMetadata.namConnection}}/<b>{{partnerMetadata.acmeGlobalNotificationAddress}}</b>
+                            </small>
+                        </div>
+                        <div class="panel-body"/>
+                        <table width="100%" class="pre-scrollable">
+                            <tr>
+                                <!-- <th>Id</th> -->
+                                <th>Id</th>
+                                <th>Payload</th>
+                                <th>Region</th>
+                            </tr>
+                            <tr ng-repeat="item in notificationsGlobalRegion1" ng-class="{'selected':$last}"
+                                ng-click="clearSelection($event)">
+                                <td>{{item.accountId}}</td>
+                                <td>{{item.payload}}</td>
+                                <td>{{item.region}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div >
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><h4 class="panel-title">ACME Local&nbsp;</h4>
+                            <small>
+                                {{partnerMetadata.namConnection}}/<b>{{partnerMetadata.acmeLocalNotificationAddress}}</b>
+                            </small>
+                        </div>
+                        <div class="panel-body"/>
+                        <table width="100%" class="pre-scrollable">
+                            <tr>
+                                <!-- <th>Id</th> -->
+                                <th>Id</th>
+                                <th>Payload</th>
+                                <th>Region</th>
+                            </tr>
+                            <tr ng-repeat="item in notificationsLocalRegion1" ng-class="{'selected':$last}"
+                                ng-click="clearSelection($event)">
+                                <td>{{item.accountId}}</td>
+                                <td>{{item.payload}}</td>
+                                <td>{{item.region}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+
+                <!-- BEGIN TABLE -->
+                <div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><h4 class="panel-title">ECOMM Global&nbsp;</h4>
+                            <small>{{partnerMetadata.apacConnection}}/<b>{{partnerMetadata.ecommGlobalNotificationAddress}}</b>
+                            </small>
+                        </div>
+                        <div class="panel-body"/>
+                        <table width="100%" class="pre-scrollable">
+                            <tr>
+                                <!-- <th>Id</th> -->
+                                <th>Id</th>
+                                <th>Payload</th>
+                                <th>Region</th>
+                            </tr>
+                            <tr ng-repeat="item in notificationsGlobalRegion2" ng-class="{'selected':$last}"
+                                ng-click="clearSelection($event)">
+                                <td>{{item.accountId}}</td>
+                                <td>{{item.payload}}</td>
+                                <td>{{item.region}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><h4 class="panel-title">ECOMM Local&nbsp;</h4>
+                            <small>{{partnerMetadata.apacConnection}}/<b>{{partnerMetadata.ecommLocalNotificationAddress}}</b>
+                            </small>
+                        </div>
+                        <div class="panel-body"/>
+                        <table width="100%" class="pre-scrollable">
+                            <tr>
+                                <!-- <th>Id</th> -->
+                                <th>Id</th>
+                                <th>Payload</th>
+                                <th>Region</th>
+                            </tr>
+                            <tr ng-repeat="item in notificationsLocalRegion2" ng-class="{'selected':$last}"
+                                ng-click="clearSelection($event)">
+                                <td>{{item.accountId}}</td>
+                                <td>{{item.payload}}</td>
+                                <td>{{item.region}}</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
-
-        <div class="col-sm-12">
-            <h3 style="text-align:center;">Received notifications</h3>
-        </div>
-
-        <div class="col-sm-6">
-            <h4 style="text-align:center;">ACME (NAM)</h4>
-        </div>
-
-        <div class="col-sm-6">
-            <h4 style="text-align:center;">ECOMM (APAC)</h4>
-        </div>
-
-        <div class="col-sm-3">
-
-            <h4 style="text-align:center;">Global</h4>
-            <div class="vspace">&nbsp;</div>
-            <table width="100%" class="pre-scrollable">
-                <tr>
-                    <!-- <th>Id</th> -->
-                    <th>Id</th>
-                    <th>Payload</th>
-                    <th>Region</th>
-                </tr>
-                <tr ng-repeat="item in notificationsGlobalRegion1" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
-                    <td>{{item.accountId}}</td>
-                    <td>{{item.payload}}</td>
-                    <td>{{item.region}}</td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="col-sm-3">
-            <h4 style="text-align:center;">Local</h4>
-            <div class="vspace">&nbsp;</div>
-            <table width="100%" class="pre-scrollable">
-                <tr>
-                    <!-- <th>Id</th> -->
-                    <th>Id</th>
-                    <th>Payload</th>
-                    <th>Region</th>
-                </tr>
-                <tr ng-repeat="item in notificationsLocalRegion1" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
-                    <td>{{item.accountId}}</td>
-                    <td>{{item.payload}}</td>
-                    <td>{{item.region}}</td>
-                </tr>
-            </table>
-        </div>
-
-
-        <!-- BEGIN TABLE -->
-        <div class="col-sm-3">
-            <h4 style="text-align:center;">Global</h4>
-            <div class="vspace">&nbsp;</div>
-            <table width="100%" class="pre-scrollable">
-                <tr>
-                    <!-- <th>Id</th> -->
-                    <th>Id</th>
-                    <th>Payload</th>
-                    <th>Region</th>
-                </tr>
-                <tr ng-repeat="item in notificationsGlobalRegion2" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
-                    <td>{{item.accountId}}</td>
-                    <td>{{item.payload}}</td>
-                    <td>{{item.region}}</td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="col-sm-3">
-            <h4 style="text-align:center;">Local</h4>
-            <div class="vspace">&nbsp;</div>
-            <table width="100%" class="pre-scrollable">
-                <tr>
-                    <!-- <th>Id</th> -->
-                    <th>Id</th>
-                    <th>Payload</th>
-                    <th>Region</th>
-                </tr>
-                <tr ng-repeat="item in notificationsLocalRegion2" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
-                    <td>{{item.accountId}}</td>
-                    <td>{{item.payload}}</td>
-                    <td>{{item.region}}</td>
-                </tr>
-            </table>
         </div>
 
 

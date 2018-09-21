@@ -11,6 +11,11 @@ angular.module('myApp.home', ['ngRoute'])
 
 .controller('homeCtrl', ['$scope','$sce', 'notificationService', 'regionSvc', function($scope, $sce, notificationService, regionSvc) {
 
+    var metadataPromise = regionSvc.getMetadata();
+    metadataPromise.then(function (payload) {
+        $scope.coreMetadata = payload.data;
+    });
+
    var promise = regionSvc.getCommands("region1");
     promise.then(
         function (payload) {

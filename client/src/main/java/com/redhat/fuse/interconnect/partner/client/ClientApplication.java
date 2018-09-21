@@ -79,8 +79,7 @@ public class ClientApplication {
         return new RouteBuilder() {
             @Override
             public void configure() throws Exception {
-
-
+                
 
                 from("nam:topic:acme/account/notifications/local")
                         .log("Local NAM: ${in.body}")
@@ -124,6 +123,27 @@ public class ClientApplication {
                         .get("/global").route().setBody().constant(notificationsGlobalRegion2).endRest()
                         .get("/local").route().setBody().constant(notificationsRegion2).endRest();
 
+                Metadata metadata = 
+                        new Metadata();
+                
+                
+                metadata.setAcmeApacCommandAddress("acme/account/commands/apac");
+                metadata.setAcmeGlobalNotificationAddress("acme/account/notification/global");
+                metadata.setAcmeLocalCommandAddress("acme/account/commands/local");
+                metadata.setAcmeLocalNotificationAddress("acme/account/notifications/local");
+
+                metadata.setEcommNamCommandAddress("ecomm/account/commands/apac");
+                metadata.setEcommGlobalNotificationAddress("ecomm/account/notification/global");
+                metadata.setEcommLocalCommandAddress("ecomm/account/commands/local");
+                metadata.setEcommLocalNotificationAddress("ecomm/account/notifications/local");
+
+                metadata.setApacConnection(urlRegion2);
+                metadata.setNamConnection(urlRegion1);
+
+                rest("/metadata")
+                        .get().route().setBody()
+                        .constant(metadata)
+                        .endRest();
 
             }
         };

@@ -12,9 +12,14 @@ angular.module('myApp.services', [])
         return $http.post(baseurl + "/" + region + '/notifications', account)
     }
 
+    var getMetadata = function () {
+        return $http.get(baseurl + "/metadata");
+    }
+
     return {
         getCommands : getCommands,
-        sendNotification: sendNotification
+        sendNotification: sendNotification,
+        getMetadata : getMetadata
     }
 })
 

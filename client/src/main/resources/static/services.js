@@ -50,11 +50,16 @@ angular.module('myApp.services', [])
         return $http.post(baseurl + "/" + region + "/" + "commands/" + targetRegion, account)
     }
 
+    var getMetadata = function () {
+        return $http.get(baseurl + "/metadata");
+    }
+
 
     return {
         getGlobalNotifications: getGlobalNotifications,
         getLocalNotifications: getLocalNotifications,
-        sendCommand: sendCommand
+        sendCommand: sendCommand,
+        getMetadata: getMetadata
     }
 })
 

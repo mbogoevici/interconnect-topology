@@ -26,8 +26,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RestController
 public class CoreComponentApplication {
 
-	List<AccountUpdateCommand> commandsRegion1 = new CopyOnWriteArrayList<>();
-	List<AccountUpdateCommand> commandsRegion2 = new CopyOnWriteArrayList<>();
+    List<AccountUpdateCommand> commandsRegion1 = new CopyOnWriteArrayList<>();
+    List<AccountUpdateCommand> commandsRegion2 = new CopyOnWriteArrayList<>();
 
     @Value("${connect.url.region1:localhost}")
     String urlRegion1;
@@ -70,13 +70,13 @@ public class CoreComponentApplication {
         return jmsComponent;
     }
 
-	@Bean
-	public RouteBuilder routeBuilder() {
-		return new RouteBuilder() {
-			@Override
-			public void configure() throws Exception {
+    @Bean
+    public RouteBuilder routeBuilder() {
+        return new RouteBuilder() {
+            @Override
+            public void configure() throws Exception {
 
-				from("direct:notifications-publish-region-1").to("nam:topic:" + notificationsPublishAddress);
+                from("direct:notifications-publish-region-1").to("nam:topic:" + notificationsPublishAddress);
 
                 from("direct:notifications-publish-region-2").to("apac:topic:" + notificationsPublishAddress);
 
@@ -88,11 +88,11 @@ public class CoreComponentApplication {
                         .log("APAC ${in.body}")
                         .process(new MyProcessor(commandsRegion2, "apacCommand", sseEmitter));
 
-				restConfiguration()
-						.component("servlet")
-						.bindingMode(RestBindingMode.auto);
+                restConfiguration()
+                        .component("servlet")
+                        .bindingMode(RestBindingMode.auto);
 
-				rest("/region1/commands")
+                rest("/region1/commands")
                         .get().route().setBody().constant(commandsRegion1).endRest();
 
                 rest("/region1/notifications")
@@ -104,14 +104,19 @@ public class CoreComponentApplication {
                 rest("/region2/commands")
                         .get().route().setBody().constant(commandsRegion2).endRest();
 
-			}
-		};
-	}
+                rest("/metadata")
+                        .get().route().setBody()
+                        .constant(new Metadata(urlRegion1, urlRegion2, commandReceiveAddress, notificationsPublishAddress))
+                        .endRest();
+
+            }
+        };
+    }
 
 
-	public static void main(String[] args) {
-		SpringApplication.run(CoreComponentApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CoreComponentApplication.class, args);
+    }
 
     private static class MyProcessor implements Processor {
 

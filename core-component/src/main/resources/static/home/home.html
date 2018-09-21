@@ -1,89 +1,96 @@
-
-<div style="margin: 10px; width:990px">
-  <div class="navbar">
-    <a href="#!/home"><img src="imgs/header_logo_500.png" style="height:100px"/></a>
-    <!-- <div style="margin:5px;float: right !important"><img ng-class="selectedCard.cardType"/></div> -->
-  </div>     
-
-  
-  <!-- THIS IS THE PRIMARY CONTENT FOR THE HOME PAGE-->
+<div style="margin: 10px;">
+    <div class="navbar">
+        <a href="#!/home"><img src="imgs/header_logo_500.png" style="height:100px"/></a>
+        <!-- <div style="margin:5px;float: right !important"><img ng-class="selectedCard.cardType"/></div> -->
+    </div>
 
 
-        <div class="well well-lg">
-            <div>
-                <!-- SETTINGS FORM -->
-                <h3>Send Notification:</h3>
-                <form class="form-horizontal" role="form" lass="well well-lg">
-                    <div class="form-group">
-                        <label for="accountId" class="col-sm-3 control-label">AccountId</label>
-                        <div class="col-sm-6">
-                            <input type="text" id="accountId" class="form-control" ng-model="account.accountId"/>
-                        </div>
-                        <div class="col-sm-3"></div>
+    <!-- THIS IS THE PRIMARY CONTENT FOR THE HOME PAGE-->
+
+
+    <div>
+        <div class="panel panel-primary">
+            <!-- SETTINGS FORM -->
+            <div class="panel-heading"><h4 class="panel-title">Send Notification:</h4></div>
+            <div class="panel-body">
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <label for="accountId" class="control-label">AccountId</label>
+                    <div>
+                        <input type="text" id="accountId" class="form-control" ng-model="account.accountId"/>
                     </div>
-                    <div class="form-group">
-                        <label for="payload" class="col-sm-3 control-label">Payload</label>
-                        <div class="col-sm-6">
-                            <input type="text" id="payload" class="form-control" ng-model="account.payload"/>
-                        </div>
-                        <div class="col-sm-3"></div>
+                </div>
+                <div class="form-group">
+                    <label for="payload" class="control-label">Payload</label>
+                    <div>
+                        <input type="text" id="payload" class="form-control" ng-model="account.payload"/>
                     </div>
-                    <input type="button" value="Send to NAM" ng-click="sendNotification('NAM')"
-                           class="btn btn-primary"/>
-                    <input type="button" value="Send to APAC" ng-click="sendNotification('APAC')"
-                           class="btn btn-primary"/>
-                </form>
-                <!-- END SETTINGS FORM -->
+                </div>
+                <div class="form-group">
+                <input type="button" value="Send to NAM" ng-click="sendNotification('NAM')"
+                       class="btn btn-primary"/>
+                    <small>&nbsp;{{coreMetadata.namConnection}}/{{coreMetadata.accountNotificationsAddress}}</small>
+                </div>
+                <div class="form-group">
+                <input type="button" value="Send to APAC" ng-click="sendNotification('APAC')"
+                       class="btn btn-primary"/>
+                <small>&nbsp;{{coreMetadata.apacConnection}}/{{coreMetadata.accountNotificationsAddress}}</small>
+                </div>
+            </form>
+            </div>
+            <!-- END SETTINGS FORM -->
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading"><h4 class="panel-title">Received commands</h4></div>
+        <div class="panel-body">
+            <div class="col-md-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"><h4 class="panel-title">NAM Core&nbsp;</h4>
+                        <small>{{coreMetadata.namConnection}}/<b>{{coreMetadata.accountCommandsAddress}}</b></small>
+                    </div>
+                    <table class="table table-responsive">
+                        <tr>
+                            <!-- <th>Id</th> -->
+                            <th>Id</th>
+                            <th>Payload</th>
+                            <th>Partner</th>
+                            <th>Region (Origin)</th>
+                        </tr>
+                        <tr ng-repeat="item in commandsRegion1" ng-click="clearSelection($event)">
+                            <td>{{item.accountId}}</td>
+                            <td>{{item.payload}}</td>
+                            <td>{{item.partner}}</td>
+                            <td>{{item.region}} ({{item.type}})</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <!-- BEGIN TABLE -->
+                <div class="panel panel-primary">
+                    <div class="panel-heading"><h4 class="panel-title">APAC Core&nbsp;</h4>
+                        <small>{{coreMetadata.apacConnection}}/<b>{{coreMetadata.accountCommandsAddress}}</b></small>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <!-- <th>Id</th> -->
+                            <th>Id</th>
+                            <th>Payload</th>
+                            <th>Partner</th>
+                            <th>Region (Origin)</th>
+                        </tr>
+                        <tr ng-repeat="item in commandsRegion2" ng-click="clearSelection($event)">
+                            <td>{{item.accountId}}</td>
+                            <td>{{item.payload}}</td>
+                            <td>{{item.partner}}</td>
+                            <td>{{item.region}} ({{item.type}})</td>
+                        </tr>
+                    </table>
+                    <!-- END TABLE -->
+                </div>
             </div>
         </div>
-
-        <div class="col-sm-12">
-            <h2 style="text-align:center;">Received commands</h2>
-        </div>
-    <div class="col-sm-6">
-    <h3 style="text-align:center;">NAM Core</h3>
-    <div class="vspace">&nbsp;</div>
-    <table width="100%">
-        <tr>
-            <!-- <th>Id</th> -->
-            <th>Id</th>
-            <th>Payload</th>
-            <th>Partner</th>
-            <th>Region</th>
-            <th>Type</th>
-        </tr>
-        <tr ng-repeat="item in commandsRegion1" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
-            <td>{{item.accountId}}</td>
-            <td>{{item.payload}}</td>
-            <td>{{item.partner}}</td>
-            <td>{{item.region}}</td>
-            <td>{{item.type}}</td>
-        </tr>
-    </table>
     </div>
-
-    <div class="col-sm-6">
-        <!-- BEGIN TABLE -->
-        <h3 style="text-align:center;">APAC Core</h3>
-        <div class="vspace">&nbsp;</div>
-        <table width="100%">
-            <tr>
-                <!-- <th>Id</th> -->
-                <th>Id</th>
-                <th>Payload</th>
-                <th>Partner</th>
-                <th>Region</th>
-                <th>Type</th>
-            </tr>
-            <tr ng-repeat="item in commandsRegion2" ng-class="{'selected':$last}" ng-click="clearSelection($event)">
-                <td>{{item.accountId}}</td>
-                <td>{{item.payload}}</td>
-                <td>{{item.partner}}</td>
-                <td>{{item.region}}</td>
-                <td>{{item.type}}</td>
-            </tr>
-        </table>
-        <!-- END TABLE -->
-    </div>
-
 </div>
